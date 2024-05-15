@@ -39,12 +39,12 @@ fs.watch(modulesDir, (eventType, filename) => {
 
 (async () => {
     await reloadModules();
-    if (modules.tangthuvien) {
-        const novels = await modules.tangthuvien.crawlAllNovels();
+    if (modules['tangthuvien']) {
+        const novels = await modules['tangthuvien'].crawlAllNovels();
         console.log(novels);
 
         if (novels.length > 0) {
-            const chapters = await modules.tangthuvien.fetchChapterList(novels[1].detailLink);
+            const chapters = await modules['tangthuvien'].fetchChapterList(novels[1].detailLink);
             console.log(chapters);
         }
     } else {
