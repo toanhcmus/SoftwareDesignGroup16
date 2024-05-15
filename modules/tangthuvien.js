@@ -173,7 +173,6 @@ async function crawlChapter(keyword, chapter) {
 
 module.exports = {
     getName,
-    crawlNovelsFromPage,
     crawlAllNovels,
     fetchChapterList,
     crawlChapter,
