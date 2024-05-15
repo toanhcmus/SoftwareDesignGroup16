@@ -138,22 +138,11 @@ async function fetchChapterList(novelUrl) {
     }
 }
 
-async function crawlChapter(keyword, chapter) {
+async function crawlChapter(chapterLink) {
     try {
-        const filteredNovels = listNovels.filter(novel => novel.title.toLowerCase().includes(keyword.toLowerCase()));
-
-        if (filteredNovels.length === 0) {
-            console.log('No novels found matching the keyword.');
-            return;
-        }
-
-        const novel = filteredNovels[0];
-
-        const chapterLink = `${novel.detailLink}/chuong-${chapter}`;
-
         const chapterResponse = await axios.get(chapterLink);
         if (chapterResponse.status !== 200) {
-            console.error(`Failed to fetch chapter ${chapter} for ${novel.title}`);
+            console.error(`Failed to fetch chapter`);
             return;
         }
 
@@ -164,8 +153,7 @@ async function crawlChapter(keyword, chapter) {
 
         const firstBoxChapText = chapterContent.find('.box-chap').first().text().trim();
         
-        console.log(`Chapter ${chapter} of "${novel.title}"`);
-        console.log(firstBoxChapText);
+        return firstBoxChapText;
     } catch (error) {
         console.error('Error:', error);
     }

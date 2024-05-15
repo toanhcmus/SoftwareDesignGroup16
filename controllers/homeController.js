@@ -46,6 +46,9 @@ fs.watch(modulesDir, (eventType, filename) => {
         if (novels.length > 0) {
             const chapters = await modules['tangthuvien'].fetchChapterList(novels[1].detailLink);
             console.log(chapters);
+            const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].link);
+            console.log('Nội dung chapter 1');
+            console.log(chapterContent);
         }
     } else {
         console.error('tangthuvien module not loaded.');
