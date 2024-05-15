@@ -15,12 +15,16 @@ async function crawlNovelsFromPage(url) {
         $('.book-img-text ul li').each((index, element) => {
             const title = $(element).find('h4 a').text().trim();
             const cover = $(element).find('img').attr('src');
+            const author = $(element).find('.book-mid-info .author .name').text().trim();
+            const genres = $(element).find('.book-mid-info .author a[href*="the-loai"]').map((i, el) => $(el).text().trim()).get();
             const chapters = $(element).find('.author span').last().text().trim();
             const detailLink = $(element).find('.book-right-info .blue-btn.add-book').attr('href');
 
             novels.push({
                 title,
                 cover,
+                author,
+                genres,
                 chapters,
                 detailLink: detailLink ? detailLink.trim() : ''
             });
