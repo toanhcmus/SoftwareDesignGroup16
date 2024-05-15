@@ -8,11 +8,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-// Controllers
-const homeController = require('./controllers/homeController');
+// Routers
+const router = require('./routers/router.js');
 
-// Routes
-app.use('/', homeController);
+app.use('/', router);
 
 // Start the server
 app.listen(port, () => {
