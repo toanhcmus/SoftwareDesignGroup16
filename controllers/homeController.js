@@ -50,7 +50,17 @@ fs.watch(modulesDir, (eventType, filename) => {
             console.log('Nội dung chapter 1');
             console.log(chapterContent);
         }
-    } else {
+    }
+    if (modules.thichtruyen) {
+        const novels = await modules.thichtruyen.crawlAllNovels();
+        console.log(novels);
+
+        if (novels.length > 0) {
+            const chapters = await modules.thichtruyen.fetchChapterList(novels[1].detailLink);
+            console.log(chapters);
+        }
+    }
+    else {
         console.error('tangthuvien module not loaded.');
     }
 })();
@@ -69,7 +79,7 @@ fs.watch(modulesDir, (eventType, filename) => {
 
 //         const novels = await modules.tangthuvien.crawlAllNovels();
 //         console.log(novels);
-    
+
 //         if (novels.length > 0) {
 //             const chapters = await modules.tangthuvien.fetchChapterList(novels[1].detailLink);
 //             console.log(chapters);
