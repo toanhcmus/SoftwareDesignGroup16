@@ -47,7 +47,7 @@ fs.watch(modulesDir, (eventType, filename) => {
         if (novels.length > 0) {
             const chapters = await modules['tangthuvien'].fetchChapterList(novels[0].detailLink);
             console.log(chapters);
-            const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].link);
+            const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].detailLink);
             console.log('Chapter 1');
             console.log(chapterContent);
         }
