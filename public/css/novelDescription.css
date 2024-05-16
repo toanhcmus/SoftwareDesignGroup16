@@ -1,0 +1,113 @@
+@font-face {
+    font-family: jetBrain;
+    src: url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+}
+
+body {
+    background-color: #C8C5BC;
+    align-items: center;
+}
+
+.main-container {
+    width: 60%;
+    height: 100%;
+    background-color: #EDEBDF;
+    margin: 20% auto;
+}
+
+.container {
+    margin: auto;
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono';
+    padding: 20px;
+
+    transform: translateY(-20%)
+}
+
+.novel-cover {
+    box-shadow: -10px 10px 4px slategray;
+    max-width: 265px;
+    max-height: 396px;
+    width: 50%;
+    height: 396px;
+    display: flex;
+    margin-right: 10%;
+}
+
+.novel-intro {
+    height: 396px;
+    display: flex;
+}
+
+.read-novel-btn {
+    background-color: #1E1E1E;
+    border: none;
+    color: white;
+    font-family: 'JetBrains Mono';
+    padding: 10px;
+    display: flex;
+    width: 70%;
+    text-align: center;
+
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.read-novel-btn span {
+    margin: auto;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.read-novel-btn span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.read-novel-btn:hover span {
+    padding-right: 25px;
+}
+
+.read-novel-btn:hover span:after {
+opacity: 1;
+right: 0;
+}
+
+label {
+    margin-top: 35%;
+    display: block;
+}
+
+#select-option-3 {
+    align-self: last baseline;
+    width: 70%;
+    height: 10%;
+    font-family: 'JetBrains Mono';
+    margin-bottom: 20%;
+    text-align: center;
+}
+
+
+.novel-description {
+    background-color: #1E1E1E;
+    width: 50%;
+    text-align: center;
+    display: block;
+}
+
+.break {
+    flex-basis: 100%;
+    background-color: #1E1E1E;
+    margin-bottom: 5px;
+}

@@ -10,9 +10,11 @@ app.set('view engine', 'ejs');
 
 // Controllers
 const homeController = require('./controllers/homeController');
+const novelController = require('./controllers/novelDescriptionController');
 
 // Routes
 app.use('/', homeController);
+app.use('/novel', novelController);
 
 // Start the server
 app.listen(port, () => {
