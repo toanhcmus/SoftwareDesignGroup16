@@ -15,6 +15,10 @@ const novelController = require('./controllers/novelDescriptionController');
 // Routes
 app.use('/', homeController);
 app.use('/novel', novelController);
+// Routers
+const router = require('./routers/router.js');
+
+app.use('/', router);
 
 // Start the server
 app.listen(port, () => {
