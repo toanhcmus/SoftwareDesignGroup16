@@ -40,54 +40,35 @@ fs.watch(modulesDir, (eventType, filename) => {
 (async () => {
     await reloadModules();
     if (modules['tangthuvien']) {
-        const novels = await modules['tangthuvien'].crawlAllNovels();
+        const novels = await modules['tangthuvien'].crawlAllNovels('nhân sinh');
         console.log(novels);
+        console.log('Number of novels: ', novels.length);
 
         if (novels.length > 0) {
-            const chapters = await modules['tangthuvien'].fetchChapterList(novels[1].detailLink);
+            const chapters = await modules['tangthuvien'].fetchChapterList(novels[0].detailLink);
             console.log(chapters);
             const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].link);
-            console.log('Nội dung chapter 1');
+            console.log('Chapter 1');
             console.log(chapterContent);
-        }
-    }
-    if (modules.thichtruyen) {
-        const novels = await modules.thichtruyen.crawlAllNovels();
-        console.log(novels);
-
-        if (novels.length > 0) {
-            const chapters = await modules.thichtruyen.fetchChapterList(novels[1].detailLink);
-            console.log(chapters);
         }
     }
     else {
         console.error('tangthuvien module not loaded.');
     }
+    
+    // if (modules['thichtruyen']) {
+    //     const novels = await modules['thichtruyen'].crawlAllNovels();
+    //     console.log(novels);
+
+    //     if (novels.length > 0) {
+    //         const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
+    //         console.log(chapters);
+    //     }
+    // }
+    // else {
+    //     console.error('thichtruyen module not loaded.');
+    // }
 })();
-
-// setTimeout(async () => {
-//     console.log(`Number of modules: ${countModules(modules)}`);
-//     for (const moduleName in modules) {
-//         const name = await modules[moduleName].getName();
-//         console.log(`Module Name: ${name}`);
-//     }
-// }, 1000);
-
-// setTimeout(async () => {
-//     if (modules.tangthuvien) {
-//         console.log(await modules.tangthuvien.getName())
-
-//         const novels = await modules.tangthuvien.crawlAllNovels();
-//         console.log(novels);
-
-//         if (novels.length > 0) {
-//             const chapters = await modules.tangthuvien.fetchChapterList(novels[1].detailLink);
-//             console.log(chapters);
-//         }
-//     } else {
-//         console.error('tangthuvien module not loaded.');
-//     }
-// }, 1000);
 
 module.exports = {
     renderHome: async (req, res, next) => {

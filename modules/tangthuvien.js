@@ -37,15 +37,21 @@ async function crawlNovelsFromPage(url) {
     }
 }
 
-async function crawlAllNovels() {
+async function crawlAllNovels(keyword) {
     try {
-        const baseUrl = 'https://truyen.tangthuvien.vn/ket-qua-tim-kiem?page=';
+        console.log(`Crawling tangthuvien... (keyword: ${keyword})`);
+        const baseUrl = `https://truyen.tangthuvien.vn/ket-qua-tim-kiem?term=${encodeURIComponent(keyword)}&page=`;
         let currentPage = 1;
         let maxPage = 1;
         const allNovels = [];
 
         const firstPageResponse = await axios.get(baseUrl + currentPage);
         const $ = cheerio.load(firstPageResponse.data);
+
+        const novelListContainer = $('.book-img-text ul');
+        if (novelListContainer.find('li').length === 1 && novelListContainer.find('li p').text().trim() === 'Không tìm thấy truyện nào theo yêu cầu') {
+            return [];
+        }
 
         $('.pagination a').each((index, element) => {
             const pageText = $(element).text().trim();
@@ -57,12 +63,9 @@ async function crawlAllNovels() {
             }
         });
 
-        maxPage = 1;
-
         while (currentPage <= maxPage) {
             const pageNovels = await crawlNovelsFromPage(baseUrl + currentPage);
             allNovels.push(...pageNovels);
-            console.log(allNovels.length);
             currentPage++;
         }
 
@@ -108,8 +111,6 @@ async function fetchChapterList(novelUrl) {
                 const chapterTitle = $(element).find('a').text().trim();
                 chapters.push({ title: chapterTitle, link: chapterLink });
             });
-
-            console.log(chapters.length);
 
             try {
                 const nextPageButton = await page.$('.pagination li:last-child a[aria-label="Next"]');
