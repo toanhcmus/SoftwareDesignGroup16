@@ -8,6 +8,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
+// Controllers
+const homeController = require('./controllers/homeController');
+const novelController = require('./controllers/novelDescriptionController');
+
+// Routes
+app.use('/', homeController);
+app.use('/novel', novelController);
 // Routers
 const router = require('./routers/router.js');
 

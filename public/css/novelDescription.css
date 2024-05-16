@@ -1,0 +1,142 @@
+body {
+    background-color: #C8C5BC;
+    align-items: center;
+}
+
+.flex-container-vertical {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 10% auto;
+}
+
+.flex-container-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    justify-items: center;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono';
+}
+
+.cover-section {
+    width: 260px;
+    height: 390px;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main-container {
+    width: 60%;
+    height: 100%;
+    background-color: #EDEBDF;
+}
+
+.name-author-section {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+}
+
+.name-author-section h4 {
+    margin: 0;
+}
+
+.name-author-section h1 {
+    margin-top: 5%;
+}
+
+.read-novel-btn {
+    background-color: #1E1E1E;
+    border: none;
+    color: white;
+    font-family: 'JetBrains Mono';
+    padding: 10px;
+    display: flex;
+    width: 70%;
+    text-align: center;
+
+    margin-top: 10%;
+
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.read-novel-btn span {
+    margin: auto;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.read-novel-btn span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.read-novel-btn:hover span {
+    padding-right: 25px;
+}
+
+.read-novel-btn:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.name-author-section label {
+    margin-top: 10%;
+}
+
+#select-option-3 {
+    width: 70%;
+    height: 10%;
+    font-family: 'JetBrains Mono';
+    text-align: center;
+}
+
+.float {
+    transform: translateY(-15%);
+}
+
+.drop-shadow {
+    box-shadow: -10px 10px 4px slategray;
+}
+
+.description-section {
+    align-self: self-start;
+    width: 50%;
+}
+
+.category-section {
+    align-self: self-start;
+    width: 50%;
+}
+
+.detail-section {
+    width: 80%;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.chapter-list {
+    font-family: 'JetBrains Mono';
+    margin: 0 auto;
+}
+
+.hr-one {
+    border-top: 2px solid #1E1E1E;
+    width: 90%;
+}
+
+.hr-two {
+    border-top: 2px solid #1E1E1E;
+    margin-right: 10%;
+}
