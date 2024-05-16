@@ -70,8 +70,10 @@ fs.watch(modulesDir, (eventType, filename) => {
     // }
 })();
 
-module.exports = {
-    renderHome: async (req, res, next) => {
+class homeController {
+    renderHome (req, res, next) {
         res.render('home');
     }
 }
+
+module.exports = new homeController;
