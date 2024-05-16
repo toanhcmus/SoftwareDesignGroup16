@@ -1,47 +1,52 @@
-@font-face {
-    font-family: jetBrain;
-    src: url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
-}
-
 body {
     background-color: #C8C5BC;
     align-items: center;
+}
+
+.flex-container-vertical {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 10% auto;
+}
+
+.flex-container-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    justify-items: center;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono';
+}
+
+.cover-section {
+    width: 260px;
+    height: 390px;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .main-container {
     width: 60%;
     height: 100%;
     background-color: #EDEBDF;
-    margin: 20% auto;
 }
 
-.container {
-    margin: auto;
-    width: 80%;
+.name-author-section {
     height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    font-family: 'JetBrains Mono';
-    padding: 20px;
-
-    transform: translateY(-20%)
-}
-
-.novel-cover {
-    box-shadow: -10px 10px 4px slategray;
-    max-width: 265px;
-    max-height: 396px;
     width: 50%;
-    height: 396px;
     display: flex;
-    margin-right: 10%;
+    flex-direction: column;
+    align-content: space-between;
 }
 
-.novel-intro {
-    height: 396px;
-    display: flex;
+.name-author-section h4 {
+    margin: 0;
+}
+
+.name-author-section h1 {
+    margin-top: 5%;
 }
 
 .read-novel-btn {
@@ -53,6 +58,8 @@ body {
     display: flex;
     width: 70%;
     text-align: center;
+
+    margin-top: 10%;
 
     transition: all 0.5s;
     cursor: pointer;
@@ -80,34 +87,56 @@ body {
 }
 
 .read-novel-btn:hover span:after {
-opacity: 1;
-right: 0;
+    opacity: 1;
+    right: 0;
 }
 
-label {
-    margin-top: 35%;
-    display: block;
+.name-author-section label {
+    margin-top: 10%;
 }
 
 #select-option-3 {
-    align-self: last baseline;
     width: 70%;
     height: 10%;
     font-family: 'JetBrains Mono';
-    margin-bottom: 20%;
     text-align: center;
 }
 
+.float {
+    transform: translateY(-15%);
+}
 
-.novel-description {
-    background-color: #1E1E1E;
+.drop-shadow {
+    box-shadow: -10px 10px 4px slategray;
+}
+
+.description-section {
+    align-self: self-start;
     width: 50%;
-    text-align: center;
-    display: block;
 }
 
-.break {
-    flex-basis: 100%;
-    background-color: #1E1E1E;
-    margin-bottom: 5px;
+.category-section {
+    align-self: self-start;
+    width: 50%;
+}
+
+.detail-section {
+    width: 80%;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.chapter-list {
+    font-family: 'JetBrains Mono';
+    margin: 0 auto;
+}
+
+.hr-one {
+    border-top: 2px solid #1E1E1E;
+    width: 90%;
+}
+
+.hr-two {
+    border-top: 2px solid #1E1E1E;
+    margin-right: 10%;
 }
