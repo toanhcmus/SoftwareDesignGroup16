@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>HappyGroup</title>
-        <link type="text/css" href="css/novelDescription.css" rel="stylesheet">
+        <link type="text/css" href="/css/novelPage.css" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
@@ -13,13 +13,13 @@
         <div class="flex-container-vertical main-container drop-shadow">
             <div class="flex-container-horizontal">
                 <div class="cover-section drop-shadow float"> 
-                    <img src="https://static.8cache.com/cover/eJzLyTDWr8g0KCmwdHIMCMp0MTQsNw9yMzXyczXLMXTyiTfNcEv3twzPzIvMTXRycwvON8gJzst1CsgLdw5zTDQ3SgyLMCkvLCgyL64odfENi_Dxcgq1LTcyM9XNMLY0AwCE9x2t/than-dao-dan-ton-6060282.jpg" alt="Thần Đạo Đan Tôn" class="img-responsive item-img" itemprop="image">
+                    <img src = <%=cover%> alt= <%=title%>>
                 </div>
 
                 <div class="name-author-section">
-                    <h1>Thần đạo đan tôn</h1>
+                    <h1> <%=title%> </h1>
 
-                    <h4>Cô đơn địa phi</h4>
+                    <h4> <%=author%> </h4>
 
                     <label for="select-option-3">Nguồn</label>
 
@@ -68,10 +68,17 @@
             </div>
 
 
-            <div class="chapter-list">
+            <div class="flex-container-vertical chapter-list">
+                
                 <h3>
                     Danh sách chương
                 </h3>
+
+                <div class="flex-container-horizontal">
+                    <ul>
+                        <%- chapterList%>
+                    </ul>
+                </div>
             </div>
         </div>
     </body>

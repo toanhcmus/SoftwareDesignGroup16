@@ -18,6 +18,7 @@ app.use('/novel', novelController);
 // Routers
 const router = require('./routers/router.js');
 
+app.use('/novel/', novelPageRouter);
 app.use('/', router);
 
 // Start the server
