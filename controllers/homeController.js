@@ -41,21 +41,21 @@ fs.watch(modulesDir, (eventType, filename) => {
     await reloadModules();
     if (modules['tangthuvien']) {
         const novels = await modules['tangthuvien'].crawlAllNovels('nhân sinh');
-        console.log(novels);
-        console.log('Number of novels: ', novels.length);
+        //console.log(novels);
+        //console.log('Number of novels: ', novels.length);
 
         if (novels.length > 0) {
             const chapters = await modules['tangthuvien'].fetchChapterList(novels[0].detailLink);
-            console.log(chapters);
-            const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].detailLink);
-            console.log('Chapter 1');
-            console.log(chapterContent);
+            //console.log(chapters);
+            // const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].link);
+            // console.log('Chapter 1');
+            // console.log(chapterContent);
         }
     }
     else {
         console.error('tangthuvien module not loaded.');
     }
-    
+
     // if (modules['thichtruyen']) {
     //     const novels = await modules['thichtruyen'].crawlAllNovels();
     //     console.log(novels);
@@ -70,9 +70,28 @@ fs.watch(modulesDir, (eventType, filename) => {
     // }
 })();
 
+
+const searchBook = async (keyword) => {
+    if (keyword==''){
+        return []
+    }
+    console.log('searchBook in homeController ');
+    await reloadModules();
+    let novels = []
+    if (modules['tangthuvien']) {
+        novels = await modules['tangthuvien'].crawlAllNovels(keyword);
+    }
+    else {
+        console.error('tangthuvien module not loaded.');
+    }
+    return novels;
+};
 class HomeController {
-    renderHome (req, res, next) {
-        res.render('home');
+    async renderHome(req, res, next) {
+        const keywordSearch = req.query.keyword || '';
+        const novels = await searchBook(keywordSearch)
+        // console.log("Vô homeController nhé")
+        res.render('home', { novels: novels });
     }
 }
 
