@@ -1,6 +1,6 @@
 const { forever } = require('request-promise');
 const tangthuvien = require('../modules/thichtruyen.js');
-const stringUtil = require('../utils/stringUtil.js')
+const stringUtil = require('../utilities/stringUtil.js')
 
 class NovelPageController {
     renderNovelPage(req, res) {
