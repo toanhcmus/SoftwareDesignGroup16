@@ -6,39 +6,43 @@ class NovelPageController {
     renderNovelPage(req, res) {
         const novel = req.params.name;
 
-        console.log(req.params.name);
+        console.log(req.params.name + " book accessed");
 
         tangthuvien.crawlAllNovels().then(
             results => {
-                const item = stringUtil.reformatForUrlHandling(results[0].title);
+                results.forEach(item => {
+                    console.log(item + " Searched");
 
-                if (novel == item) {
+                    const itemName = stringUtil.reformatForUrlHandling(item.title);
+
+                    if (novel.localeCompare(itemName) == 0) {
                     
-                const cover = results[0].cover;
-                const name = results[0].title;
-                console.log(results[0]);
-
-                let chapColList = "";
-
-                tangthuvien.fetchChapterList(results[0].detailLink).then(
-                    results => {
-                        let count = 1;
-                        results.forEach(element => {
-                            chapColList += "<option> <a href=" + element + "> Chương " + count + "</a> </option>";
-                            count++;
-                        })
-
-                        const renderItems = {
-                            cover: cover, 
-                            name: name,
-                            author: results[0].chapters,
-                            chapColOne: chapColList,
-                        };
+                        const cover = item.cover;
+                        const title = item.title;
+                        console.log(item);
         
-                        res.render('novelPage', renderItems);
+                        let chapColList = "";
+        
+                        tangthuvien.fetchChapterList(item.detailLink).then(
+                            results => {
+                                let count = 1;
+                                results.forEach(element => {
+                                    chapColList += "<li> <a href=" + element + "> Chương " + count + "</a> </li>";
+                                    count++;
+                                })
+        
+                                const renderItems = {
+                                    cover: cover, 
+                                    title: title,
+                                    author: item.chapters,
+                                    chapterList: chapColList
+                                };
+                
+                                res.render('novelPage', renderItems);                            
+                            }
+                        );
                     }
-                );
-            }
+                });
         });
 
         console.log('Rendering novel page!');

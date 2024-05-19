@@ -7,7 +7,9 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    margin: 10% auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
 }
 
 .flex-container-horizontal {
@@ -17,6 +19,7 @@ body {
     justify-items: center;
     flex-wrap: wrap;
     font-family: 'JetBrains Mono';
+    margin: 0;
 }
 
 .cover-section {
@@ -31,6 +34,7 @@ body {
     width: 60%;
     height: 100%;
     background-color: #EDEBDF;
+    margin-top: 10%
 }
 
 .name-author-section {
@@ -142,8 +146,8 @@ body {
 }
 
 .cover-section img {
-    width: 100%;
-    height: 100%;
+    width: 260px;
+    height: 390px;
 }
 
 .chapter-list {
@@ -151,4 +155,8 @@ body {
     flex-wrap: wrap;
     font-family: 'JetBrains Mono';
     text-wrap: pretty;
+}
+
+.top-container {
+    max-height: 390px;
 }
