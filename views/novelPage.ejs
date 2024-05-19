@@ -3,7 +3,11 @@
 <html>
     <head>
         <title>HappyGroup</title>
+<<<<<<< HEAD:views/novelDescription.ejs
         <link type="text/css" href="/css/novelPage.css" rel="stylesheet">
+=======
+        <link type="text/css" href="css/novelPage.css" rel="stylesheet">
+>>>>>>> 55cd9bf (reformat name utils):views/novelPage.ejs
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
@@ -13,6 +17,7 @@
         <div class="flex-container-vertical main-container drop-shadow">
             <div class="flex-container-horizontal">
                 <div class="cover-section drop-shadow float"> 
+<<<<<<< HEAD:views/novelDescription.ejs
                     <img src = <%=cover%> alt= <%=title%>>
                 </div>
 
@@ -20,6 +25,15 @@
                     <h1> <%=title%> </h1>
 
                     <h4> <%=author%> </h4>
+=======
+                    <img src = <%= cover %> alt= <%= name %> class="img-responsive item-img" itemprop="image">
+                </div>
+
+                <div class="name-author-section">
+                    <h1> <%= name %> </h1>
+
+                    <h4> <%= author %> </h4>
+>>>>>>> 55cd9bf (reformat name utils):views/novelPage.ejs
 
                     <label for="select-option-3">Nguồn</label>
 
@@ -68,17 +82,27 @@
             </div>
 
 
+<<<<<<< HEAD:views/novelDescription.ejs
             <div class="flex-container-vertical chapter-list">
+=======
+            <div class="flex-container-horizontal chapter-list">
+>>>>>>> 55cd9bf (reformat name utils):views/novelPage.ejs
                 
                 <h3>
                     Danh sách chương
                 </h3>
+<<<<<<< HEAD:views/novelDescription.ejs
 
                 <div class="flex-container-horizontal">
                     <ul>
                         <%- chapterList%>
                     </ul>
                 </div>
+=======
+                <select>
+                    <%- chapColOne %>
+                </select>
+>>>>>>> 55cd9bf (reformat name utils):views/novelPage.ejs
             </div>
         </div>
     </body>

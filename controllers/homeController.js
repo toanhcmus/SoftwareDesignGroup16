@@ -70,10 +70,10 @@ fs.watch(modulesDir, (eventType, filename) => {
     // }
 })();
 
-class homeController {
+class HomeController {
     renderHome (req, res, next) {
         res.render('home');
     }
 }
 
-module.exports = new homeController;
+module.exports = new HomeController;

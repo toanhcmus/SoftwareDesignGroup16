@@ -12,8 +12,13 @@ app.set('view engine', 'ejs');
 
 // Routers
 const router = require('./routers/router.js');
+const novelPageRouter = require('./routers/novelRouter.js');
 
+<<<<<<< HEAD
 app.use('/novel/', novelPageRouter);
+=======
+app.use('/novel', novelPageRouter);
+>>>>>>> 55cd9bf (reformat name utils)
 app.use('/', router);
 
 // Start the server
