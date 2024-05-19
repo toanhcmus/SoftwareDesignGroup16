@@ -8,6 +8,7 @@ body {
     flex-direction: column;
     flex-wrap: wrap;
     margin: 10% auto;
+    font-family: 'JetBrains Mono';
 }
 
 .flex-container-horizontal {
@@ -139,4 +140,27 @@ body {
 .hr-two {
     border-top: 2px solid #1E1E1E;
     margin-right: 10%;
+}
+
+.cover-section img {
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    width: 60%;
+    height: 100%;
+    margin: 5% auto;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+.header h1, h3, h4 {
+    margin-top: 5px;
+}
+
+.chapter {
+    padding: 20px;
+    margin-top: 0%;
 }
