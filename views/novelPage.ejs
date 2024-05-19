@@ -4,6 +4,7 @@
     <head>
         <title>HappyGroup</title>
         <link type="text/css" href="/css/novelPage.css" rel="stylesheet">
+        <link type="text/css" href="/css/novelPage.css" rel="stylesheet">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
@@ -13,13 +14,13 @@
         <div class="flex-container-vertical main-container drop-shadow">
             <div class="flex-container-horizontal top-container">
                 <div class="cover-section drop-shadow float"> 
-                    <img src = <%= cover %> alt= <%= title %>>
+                    <img src = <%=cover%> alt= <%=title%>>
                 </div>
 
                 <div class="name-author-section">
-                    <h1> <%= title %> </h1>
+                    <h1> <%=title%> </h1>
 
-                    <h4> <%= author %> </h4>
+                    <h4> <%=author%> </h4>
 
                     <label for="select-option-3">Nguồn</label>
 
@@ -70,12 +71,17 @@
 
             <div class="flex-container-vertical chapter-list">
                 
+            <div class="flex-container-vertical chapter-list">
+                
                 <h3>
                     Danh sách chương
                 </h3>
-                <ul>
-                    <%- chapterList %>
-                </ul>
+
+                <div class="flex-container-horizontal">
+                    <ul>
+                        <%- chapterList%>
+                    </ul>
+                </div>
             </div>
         </div>
     </body>

@@ -41,15 +41,15 @@ fs.watch(modulesDir, (eventType, filename) => {
     await reloadModules();
     if (modules['tangthuvien']) {
         const novels = await modules['tangthuvien'].crawlAllNovels('nhân sinh');
-        console.log(novels);
-        console.log('Number of novels: ', novels.length);
+        // console.log(novels);
+        // console.log('Number of novels: ', novels.length);
 
         if (novels.length > 0) {
             const chapters = await modules['tangthuvien'].fetchChapterList(novels[0].detailLink);
-            console.log(chapters);
+            // console.log(chapters);
             const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].detailLink);
-            console.log('Chapter 1');
-            console.log(chapterContent);
+            // console.log('Chapter 1');
+            // console.log(chapterContent);
         }
     }
     else {
