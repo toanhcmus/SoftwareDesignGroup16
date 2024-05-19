@@ -56,18 +56,18 @@ fs.watch(modulesDir, (eventType, filename) => {
         console.error('tangthuvien module not loaded.');
     }
 
-    // if (modules['thichtruyen']) {
-    //     const novels = await modules['thichtruyen'].crawlAllNovels();
-    //     console.log(novels);
+    if (modules['thichtruyen']) {
+        const novels = await modules['thichtruyen'].crawlAllNovels();
+        console.log(novels);
 
-    //     if (novels.length > 0) {
-    //         const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
-    //         console.log(chapters);
-    //     }
-    // }
-    // else {
-    //     console.error('thichtruyen module not loaded.');
-    // }
+        // if (novels.length > 0) {
+        //     const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
+        //     console.log(chapters);
+        // }
+    }
+    else {
+        console.error('thichtruyen module not loaded.');
+    }
 })();
 
 

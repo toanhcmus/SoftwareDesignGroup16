@@ -10,6 +10,9 @@ app.set('view engine', 'ejs');
 
 // Controllers
 
+// Routes
+// app.use('/', homeController);
+// app.use('/novel', novelController);
 // Routers
 const router = require('./routers/router.js');
 const novelPageRouter = require('./routers/novelRouter.js');
