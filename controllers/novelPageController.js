@@ -1,5 +1,5 @@
 const { forever } = require('request-promise');
-const tangthuvien = require('../modules/thichtruyen.js');
+const thichtruyen = require('../modules/thichtruyen.js');
 const stringUtil = require('../utilities/stringUtil.js')
 
 class NovelPageController {
@@ -8,7 +8,7 @@ class NovelPageController {
 
         console.log(req.params.name + " book accessed");
 
-        tangthuvien.crawlAllNovels().then(
+        thichtruyen.crawlAllNovels().then(
             results => {
                 results.forEach(item => {
                     console.log(item + " Searched");
@@ -23,7 +23,7 @@ class NovelPageController {
         
                         let chapColList = "";
         
-                        tangthuvien.fetchChapterList(item.detailLink).then(
+                        thichtruyen.fetchChapterList(item.detailLink).then(
                             results => {
                                 let count = 1;
                                 results.forEach(element => {

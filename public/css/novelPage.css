@@ -51,6 +51,9 @@ body {
 
 .name-author-section h1 {
     margin-top: 5%;
+    font-size: 2vw;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .read-novel-btn {
@@ -155,8 +158,4 @@ body {
     flex-wrap: wrap;
     font-family: 'JetBrains Mono';
     text-wrap: pretty;
-}
-
-.top-container {
-    max-height: 390px;
 }

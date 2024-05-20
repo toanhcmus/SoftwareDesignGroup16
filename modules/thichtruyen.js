@@ -11,8 +11,9 @@ async function getName() {
 async function crawlAllNovels() {
     const novels = [];
     var count = 0;
-    for (let num_page = 1; num_page <= 1; num_page++) {
+    for (let num_page = 1; num_page <= 10; num_page++) {
         try {
+            console.log(count);
             const url = `https://thichtruyen.vn/tim-kiem?page=${num_page}`;
             const html = await makeRequest(url);
             const $ = cheerio.load(html);
