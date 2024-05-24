@@ -56,42 +56,56 @@ fs.watch(modulesDir, (eventType, filename) => {
         console.error('tangthuvien module not loaded.');
     }
 
-    if (modules['thichtruyen']) {
-        const novels = await modules['thichtruyen'].crawlAllNovels();
-        console.log(novels);
+    // if (modules['thichtruyen']) {
+    //     const novels = await modules['thichtruyen'].crawlAllNovels();
+    //     console.log(novels);
 
-        // if (novels.length > 0) {
-        //     const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
-        //     console.log(chapters);
-        // }
-    }
-    else {
-        console.error('thichtruyen module not loaded.');
-    }
+    //     // if (novels.length > 0) {
+    //     //     const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
+    //     //     console.log(chapters);
+    //     // }
+    // }
+    // else {
+    //     console.error('thichtruyen module not loaded.');
+    // }
 })();
 
 
 const searchBook = async (keyword) => {
     if (keyword==''){
-        return []
+        return [];
     }
-    console.log('searchBook in homeController ');
     await reloadModules();
     let novels = []
-    if (modules['tangthuvien']) {
-        novels = await modules['tangthuvien'].crawlAllNovels(keyword);
+    for (const moduleName in modules) {
+        console.log('searchBook in homeController ');
+        tempNovels=[]
+        await reloadModules();
+
+        if (moduleName!='truyenfull') {//tạm thời chưa xử lí truyện full crawl có keyword
+            tempNovels = await modules[moduleName].crawlAllNovels(keyword);
+            tempNovels.forEach(novel => {
+                novel.origin = moduleName;
+            });
+        }
+        else {
+            console.log(`Module ${moduleName} (crawl with keyword) Error.`);
+        }
+        novels.push(...tempNovels)
     }
-    else {
-        console.error('tangthuvien module not loaded.');
-    }
+    
     return novels;
 };
 class HomeController {
     async renderHome(req, res, next) {
         const keywordSearch = req.query.keyword || '';
+        let isSearched=true;
+        if(keywordSearch===''){
+            //nếu vào trang chủ lần đầu.
+            isSearched=false;
+        }
         const novels = await searchBook(keywordSearch)
-        // console.log("Vô homeController nhé")
-        res.render('home', { novels: novels });
+        res.render('home', { novels: novels, isSearched:isSearched });
     }
 }
 

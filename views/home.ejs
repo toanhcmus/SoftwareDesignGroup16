@@ -102,29 +102,42 @@
             </div>
         </div>
 
+        <%if (isSearched){ %>
 
-        <% if (novels.length>0) { %>
-            <div id="container-list-novels">
-                <h2 class="text-center mb-4">Danh sách truyện</h2>
-                <div class="row row-cols-1 row-cols-md-4 g-4">
-                    <% for(var i=0; i<novels.length; i++) {%>
-                        <div class="col">
-                            <div class="card">
-                                <img src="<%= novels[i].cover %>" class="card-img-top" alt="Card Image">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <%= novels[i].title %>
-                                    </h5>
-                                    <p class="card-text"> <%= novels[i].author %></p>
+            <% if (novels.length>0) { %>
+                <div id="container-list-novels">
+                    <h2 class="text-center mb-4">Danh sách truyện</h2>
+                    <div class="row row-cols-1 row-cols-md-4 g-4">
+                        <% for(var i=0; i<novels.length; i++) {%>
+                            <div class="col">
+                                <div class="card">
+                                    <img src="<%= novels[i].cover %>" class="card-img-top" alt="Card Image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= novels[i].title %>
+                                        </h5>
+                                        <p class="card-text"> <%= novels[i].author %></p>
+                                        <p class="card-text"> <%= novels[i].origin %></p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         <% } %>
-                </div>
+                    </div>
+    
+                                         <% }
+                 else { 
+                %> <h2>Từ khóa tìm kiếm không hợp lệ</h2> <%} 
+             %>
 
-                <% } else { %>
-                    <h1>Nhập từ khóa để tìm kiếm truyện</h1>
-                    <% } %>
+           
+        <%} else {
+            %>
+            <h2>Nhập từ khóa để tìm kiếm</h2>
+            <%
+        }
+        %>
+
+
 
 
 
