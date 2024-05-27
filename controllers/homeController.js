@@ -60,10 +60,10 @@ fs.watch(modulesDir, (eventType, filename) => {
         const novels = await modules['thichtruyen'].crawlAllNovels('người');
         console.log(novels);
 
-        // if (novels.length > 0) {
-        //     const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
-        //     console.log(chapters);
-        // }
+        if (novels.length > 0) {
+            const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
+            console.log(chapters);
+        }
     }
     else {
         console.error('thichtruyen module not loaded.');
