@@ -30,7 +30,7 @@
                         <option value="metruyen.vn">metruyen.vn</option>
                     </select>
 
-                    <Button class="read-novel-btn">
+                    <Button class="read-novel-btn" id="read-novel-btn" onclick="document.location='chapter=1'">
                         <span>
                             Bắt đầu đọc
                         </span>
@@ -68,19 +68,25 @@
                 <hr class="hr-one">             
             </div>
 
-
-            <div class="flex-container-vertical chapter-list">
                 
             <div class="flex-container-vertical chapter-list">
-                
                 <h3>
                     Danh sách chương
                 </h3>
 
-                <div class="flex-container-horizontal">
+                <div class="flex-container-horizontal chapters">
                     <ul>
-                        <%- chapterList%>
+                        <%- chapterList1%>
                     </ul>
+                    <ul>
+                        <%- chapterList2%>
+                    </ul>
+                </div>
+
+                <div class="pagination-section">
+                    <a href="#">&laquo;</a>
+                    <%- pagination%>
+                    <a href="#">&raquo;</a>
                 </div>
             </div>
         </div>

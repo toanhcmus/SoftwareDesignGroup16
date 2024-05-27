@@ -6,6 +6,6 @@ const chapterController = require('../controllers/chapterController.js');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.route("/:name/:chap").get(chapterController.renderChapterPage);
+router.route("/:name/chapter=:chap").get(chapterController.renderChapterPage);
 
 module.exports = router;

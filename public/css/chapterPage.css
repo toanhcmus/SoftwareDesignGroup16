@@ -131,6 +131,8 @@ body {
 .chapter-list {
     font-family: 'JetBrains Mono';
     margin: 0 auto;
+    width: 100%;
+    background-color: aqua;
 }
 
 .hr-one {
@@ -205,4 +207,12 @@ body {
 .previous-chapter-button:hover span:after {
     opacity: 1;
     left: 0;
+}
+
+.top-container {
+    align-content: center;
+    align-items: center;
+    width: 80%;
+    justify-content: center;
+    margin: auto;
 }

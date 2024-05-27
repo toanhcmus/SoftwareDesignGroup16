@@ -28,7 +28,7 @@ class ChapterPageController {
                                 console.log(result[chapter]);
                                 thichtruyen.crawlChapter(result[chapter]).then(
                                     chap => {
-                                        res.render('chapterPage', {chapter: chap});
+                                        res.render('chapterPage', {title: title, chapter: chapter + 1, content: chap});
                                     }
                                 );
                             }
@@ -39,6 +39,8 @@ class ChapterPageController {
 
         console.log('Rendering novel page!');
     }
+
+
 };
 
 module.exports = new ChapterPageController

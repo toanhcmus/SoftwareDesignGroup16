@@ -6,6 +6,6 @@ const novelController = require('../controllers/novelPageController.js');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 
-router.route("/:name").get(novelController.renderNovelPage);
+router.route("/:name/page=:page").get(novelController.renderNovelPage);
 
 module.exports = router;
