@@ -18,6 +18,7 @@ async function crawlNovelsFromPage(url) {
             const author = $(element).find('.book-mid-info .author .name').text().trim();
             const genres = $(element).find('.book-mid-info .author a[href*="the-loai"]').map((i, el) => $(el).text().trim()).get();
             const chapters = $(element).find('.author span').last().text().trim();
+            const des = $(element).find('.intro').text().trim();
             const detailLink = $(element).find('.book-right-info .blue-btn.add-book').attr('href');
 
             novels.push({
@@ -26,6 +27,7 @@ async function crawlNovelsFromPage(url) {
                 author,
                 genres,
                 chapters,
+                des,
                 detailLink: detailLink ? detailLink.trim() : ''
             });
         });
