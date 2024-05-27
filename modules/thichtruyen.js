@@ -6,7 +6,6 @@ async function getName() {
     return 'thichtruyen';
 }
 
-
 async function crawlAllNovels() {
     const novels = [];
     var count = 0;

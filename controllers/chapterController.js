@@ -1,5 +1,5 @@
 const { forever } = require('request-promise');
-const thichtruyen = require('../modules/thichtruyen.js');
+const thichtruyen = require('../modules/tangthuvien.js');
 const stringUtil = require('../utilities/stringUtil.js')
 
 class ChapterPageController {
@@ -10,7 +10,7 @@ class ChapterPageController {
 
         console.log(req.params.name + " Chapter " + chapter);
 
-        thichtruyen.crawlAllNovels().then(
+        thichtruyen.crawlAllNovels("Tiên hiệp").then(
             results => {
                 results.forEach(item => {
                     console.log(item + " Searched");
@@ -25,10 +25,13 @@ class ChapterPageController {
                         
                         thichtruyen.fetchChapterList(item.detailLink).then(
                             result => {
-                                console.log(result[chapter]);
-                                thichtruyen.crawlChapter(result[chapter]).then(
+                                console.log(result[chapter].link);
+                                thichtruyen.crawlChapter(result[chapter].link).then(
                                     chap => {
-                                        res.render('chapterPage', {title: title, chapter: chapter + 1, content: chap});
+                                        res.render('chapterPage', {
+                                            previousPage: `document.location='chapter=${chapter}'`,
+                                            nextPage: `document.location='chapter=${chapter + 2}'`,
+                                            title: title, chapter: chapter + 1, content: chap});
                                     }
                                 );
                             }
@@ -39,8 +42,6 @@ class ChapterPageController {
 
         console.log('Rendering novel page!');
     }
-
-
 };
 
 module.exports = new ChapterPageController
