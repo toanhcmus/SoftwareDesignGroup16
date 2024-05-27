@@ -25,8 +25,8 @@ class ChapterPageController {
                         
                         thichtruyen.fetchChapterList(item.detailLink).then(
                             result => {
-                                console.log(result[chapter].link);
-                                thichtruyen.crawlChapter(result[chapter].link).then(
+                                console.log(result[chapter]);
+                                thichtruyen.crawlChapter(result[chapter]).then(
                                     chap => {
                                         res.render('chapterPage', {
                                             previousPage: `document.location='chapter=${chapter}'`,
