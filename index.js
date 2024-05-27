@@ -16,8 +16,10 @@ app.set('view engine', 'ejs');
 // Routers
 const router = require('./routers/router.js');
 const novelPageRouter = require('./routers/novelRouter.js');
+const chapterRouter = require('./routers/chapterRouter.js');
 
-app.use('/novel', novelPageRouter);
+app.use('/novel/', novelPageRouter);
+app.use('/novel/', chapterRouter);
 app.use('/', router);
 
 // Start the server

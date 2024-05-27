@@ -7,7 +7,11 @@ class StringUtils {
     }
 
     reformatForUrlHandling(str) {
-        return this.removeAccent(str).replace(/ /g, '-').toLowerCase();
+        return this.clearNonAlphabetSymbol(this.removeAccent(str).replace(/ /g, '-').toLowerCase());
+    }
+
+    clearNonAlphabetSymbol(str) {
+        return str.replace(/!|@|#|\$|%|\^|&|\*|(|)|_|\+|=|~|.|,/g, '');
     }
 }
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>HappyGroup</title>
+        <link type="text/css" href="/css/chapterPage.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="flex-container-vertical top-container">
+            <H3>
+                <%= title%>
+            </H3>
+            <H5>
+               Chương <%= chapter%>
+            </H5>
+            <div class="flex-container-horizontal">
+                <button class="previous-chapter-button" onclick="<%= previousPage%>">
+                    <span>
+                        Trước
+                    </span>
+                </button>
+                <button class="next-chapter-button" onclick="<%= nextPage%>">
+                    <span>
+                        Sau
+                    </span>   
+                </button>
+            </div>
+        </div>
+    
+            <div class="flex-container-vertical main-container drop-shadow chapter">
+                <%= content%>
+            </div>
+    </body>
+</html>

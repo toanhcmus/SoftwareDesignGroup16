@@ -12,7 +12,6 @@ async function getName() {
     return 'truyenfull';
 }
 
-
 async function crawlAllNovels() {
     try {
         let page = 1;
@@ -28,9 +27,9 @@ async function crawlAllNovels() {
           });
           const data = response.data;
           const data_push  = {
-            id: data.data.id,
+            detailLink: data.data.id,
             title: data.data.title,
-            image: data.data.image,
+            cover: data.data.image,
             author: data.data.author,
             genres: data.data.categories,
             chapters: data.data.total_chapters

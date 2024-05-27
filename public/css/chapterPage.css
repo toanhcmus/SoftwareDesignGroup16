@@ -18,6 +18,7 @@ body {
     justify-items: center;
     flex-wrap: wrap;
     font-family: 'JetBrains Mono';
+    height: max-content;
 }
 
 .cover-section {
@@ -48,25 +49,25 @@ body {
 
 .name-author-section h1 {
     margin-top: 5%;
+    font-size: 8vw;
 }
 
-.read-novel-btn {
+.next-chapter-button {
     background-color: #1E1E1E;
     border: none;
     color: white;
     font-family: 'JetBrains Mono';
     padding: 10px;
     display: flex;
-    width: 70%;
+    width: 100px;
     text-align: center;
-
     margin-top: 10%;
-
+    margin-bottom: 10px;
     transition: all 0.5s;
     cursor: pointer;
 }
 
-.read-novel-btn span {
+.next-chapter-button span {
     margin: auto;
     cursor: pointer;
     display: inline-block;
@@ -74,7 +75,7 @@ body {
     transition: 0.5s;
 }
 
-.read-novel-btn span:after {
+.next-chapter-button span:after {
     content: '\00bb';
     position: absolute;
     opacity: 0;
@@ -83,11 +84,11 @@ body {
     transition: 0.5s;
 }
 
-.read-novel-btn:hover span {
+.next-chapter-button:hover span {
     padding-right: 25px;
 }
 
-.read-novel-btn:hover span:after {
+.next-chapter-button:hover span:after {
     opacity: 1;
     right: 0;
 }
@@ -97,8 +98,8 @@ body {
 }
 
 #select-option-3 {
-    width: 70%;
-    height: 10%;
+    width: fit-content;
+    height: fit-content;
     font-family: 'JetBrains Mono';
     text-align: center;
 }
@@ -130,6 +131,8 @@ body {
 .chapter-list {
     font-family: 'JetBrains Mono';
     margin: 0 auto;
+    width: 100%;
+    background-color: aqua;
 }
 
 .hr-one {
@@ -163,4 +166,53 @@ body {
 .chapter {
     padding: 20px;
     margin-top: 0%;
+}
+
+.previous-chapter-button {
+    background-color: #1E1E1E;
+    border: none;
+    color: white;
+    font-family: 'JetBrains Mono';
+    padding: 10px;
+    display: flex;
+    width: 100px;
+    text-align: center;
+    margin-top: 10%;
+    margin-bottom: 10px;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+.previous-chapter-button span {
+    margin: auto;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.previous-chapter-button span:after {
+    content: '\00ab';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: -20px;
+    transition: 0.5s;
+}
+
+.previous-chapter-button:hover span {
+    padding-left: 25px;
+}
+
+.previous-chapter-button:hover span:after {
+    opacity: 1;
+    left: 0;
+}
+
+.top-container {
+    align-content: center;
+    align-items: center;
+    width: 80%;
+    justify-content: center;
+    margin: auto;
 }
