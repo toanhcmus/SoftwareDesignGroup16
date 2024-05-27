@@ -110,8 +110,7 @@ async function fetchChapterList(novelUrl) {
             const currentChapters = $('li').toArray();
             currentChapters.forEach((element) => {
                 const chapterLink = $(element).find('a').attr('href');
-                const chapterTitle = $(element).find('a').text().trim();
-                chapters.push({ title: chapterTitle, link: chapterLink });
+                chapters.push(chapterLink);
             });
 
             try {
