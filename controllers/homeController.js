@@ -39,35 +39,35 @@ fs.watch(modulesDir, (eventType, filename) => {
 
 (async () => {
     await reloadModules();
-    if (modules['tangthuvien']) {
-        const novels = await modules['tangthuvien'].crawlAllNovels('nhân sinh');
-        //console.log(novels);
-        //console.log('Number of novels: ', novels.length);
+    // if (modules['tangthuvien']) {
+    //     const novels = await modules['tangthuvien'].crawlAllNovels('nhân sinh');
+    //     //console.log(novels);
+    //     //console.log('Number of novels: ', novels.length);
 
-        if (novels.length > 0) {
-            const chapters = await modules['tangthuvien'].fetchChapterList(novels[0].detailLink);
-            //console.log(chapters);
-            // const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].link);
-            // console.log('Chapter 1');
-            // console.log(chapterContent);
-        }
-    }
-    else {
-        console.error('tangthuvien module not loaded.');
-    }
-
-    // if (modules['thichtruyen']) {
-    //     const novels = await modules['thichtruyen'].crawlAllNovels();
-    //     console.log(novels);
-
-    //     // if (novels.length > 0) {
-    //     //     const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
-    //     //     console.log(chapters);
-    //     // }
+    //     if (novels.length > 0) {
+    //         const chapters = await modules['tangthuvien'].fetchChapterList(novels[0].detailLink);
+    //         //console.log(chapters);
+    //         // const chapterContent = await modules['tangthuvien'].crawlChapter(chapters[0].link);
+    //         // console.log('Chapter 1');
+    //         // console.log(chapterContent);
+    //     }
     // }
     // else {
-    //     console.error('thichtruyen module not loaded.');
+    //     console.error('tangthuvien module not loaded.');
     // }
+
+    if (modules['thichtruyen']) {
+        const novels = await modules['thichtruyen'].crawlAllNovels('người');
+        console.log(novels);
+
+        // if (novels.length > 0) {
+        //     const chapters = await modules['thichtruyen'].fetchChapterList(novels[1].detailLink);
+        //     console.log(chapters);
+        // }
+    }
+    else {
+        console.error('thichtruyen module not loaded.');
+    }
 })();
 
 

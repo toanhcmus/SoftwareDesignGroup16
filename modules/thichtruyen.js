@@ -143,7 +143,9 @@ async function crawlAllNovels(keyword) {
                     detail$('div.lst-tag').each((i, el) => {
                         genres = detail$(el).find('a').text().trim();
                     });
-                    novels.push({ title, detailLink, chapters, cover, author, genres });
+                    des= detail$('div.tab-text p').first().text().trim();
+
+                    novels.push({ title, detailLink, chapters, cover, author, genres,des });
                 } catch (error) {
                     console.error(`error:`, url1);
                 }
