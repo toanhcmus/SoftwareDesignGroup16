@@ -3,6 +3,7 @@ body {
     align-items: center;
 }
 
+
 .flex-container-vertical {
     display: flex;
     flex-direction: column;
@@ -159,7 +160,9 @@ body {
     text-align: center;
 }
 
-.header h1, h3, h4 {
+.header h1,
+h3,
+h4 {
     margin-top: 5px;
 }
 
@@ -215,4 +218,29 @@ body {
     width: 80%;
     justify-content: center;
     margin: auto;
+}
+
+.dropdown {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.dropdown-menu{
+    min-width: 80px;
+    margin: 0px;
+    padding: 0px;
+}
+.dropdown-menu li{
+    width: 80px;
+    text-align: center;
+    border-radius: 8px;
+    
+}
+.dropdown-item {
+    width: 80px;
+    padding: 4px 8px;
+}
+.dropdown-divider{
+    width: 80px;
+    padding: 0 5px;
+    margin: 0;
 }
