@@ -9,12 +9,12 @@ class NovelPageController {
         const firstColumnItemSize = 10;
         const secondColumnItemSize = 10;
 
-       // console.log(req.params.name + " book accessed");
+        console.log(req.params.name + " book accessed");
 
         thichtruyen.crawlAllNovels("Tiên hiệp").then(
             results => {
                 results.forEach(item => {
-                    //console.log(item + " Searched");
+                    console.log(item + " Searched");
 
                     const itemName = stringUtil.reformatForUrlHandling(item.title);
 
@@ -22,7 +22,7 @@ class NovelPageController {
                     
                         const cover = item.cover;
                         const title = item.title;
-                        //console.log(item);
+                        console.log(item);
         
                         let chapColList1 = "";
                         let chapColList2 = "";

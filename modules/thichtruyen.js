@@ -11,7 +11,7 @@ async function fetchChapterList(novelUrl) {
     var count = 0;
     try {
         const url = `https://thichtruyen.vn/` + novelUrl;
-        //console.log(url)
+        console.log(url)
         const html = await makeRequest(url);
         const $ = cheerio.load(html);
         $('div.tab-text ul li a').each((index, element) => {
@@ -24,8 +24,8 @@ async function fetchChapterList(novelUrl) {
         console.log(error);
     }
     // so chap phai lay bang so cuoi cua chuoi
-    //console.log(count)
-    //console.log(chapters)
+    console.log(count)
+    console.log(chapters)
     return (chapters)
 }
 
@@ -33,7 +33,7 @@ async function crawlChapter(link) {
     var content = '';
     try {
         const url = `https://thichtruyen.vn/` + link;
-       // console.log(url)
+        console.log(url)
         const html = await makeRequest(url);
         const $ = cheerio.load(html);
         content = $('div.story-detail-content').text().trim();
@@ -41,7 +41,7 @@ async function crawlChapter(link) {
     } catch (error) {
         console.log(error);
     }
-    //console.log(content)
+    console.log(content)
     return (content)
 }
 function makeRequest(url) {
@@ -61,7 +61,7 @@ async function crawlAllNovels(keyword) {
     const baseUrl = `https://thichtruyen.vn/tim-kiem?q=${encodeURIComponent(keyword)}&page=`;
     let currentPage = 1;
     const novels = [];
-    //console.log("Base=",baseUrl)
+    console.log("Base=",baseUrl)
     const firstPageResponse = await makeRequest(baseUrl+currentPage);
     const $ = cheerio.load(firstPageResponse);
     const novelListContainer=$('#content-home')
@@ -110,7 +110,7 @@ async function crawlAllNovels(keyword) {
 
     }
 
-    //console.log(novels);
+    console.log(novels);
     return novels;
 }
 
