@@ -1,7 +1,7 @@
 const PDFDocument = require('pdfkit');
 const path = require('path');
 module.exports = {
-  exportFile: async (res, data) => {
+  exportFile: (res, data) => {
     const doc = new PDFDocument();
 
     res.setHeader('Content-disposition', 'attachment; filename=output.pdf');
@@ -16,8 +16,7 @@ module.exports = {
     // Use the custom font
     doc.font('DejaVuSans');
 
-    // Add content to the PDF
-    doc.text(data.content);
+    doc.text("Đây là nội dung file tải dề với duôi là epub nhưng chưa hoàn thành");
 
     doc.end();
   }

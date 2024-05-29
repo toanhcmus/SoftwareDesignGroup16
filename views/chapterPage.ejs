@@ -24,7 +24,7 @@
         <H3 id="title-novel">
             <%= title%>
         </H3>
-        <H5>
+        <H5 id="title-chapter">
             Chương <%= chapter%>
         </H5>
         <div class="flex-container-horizontal">
@@ -68,47 +68,47 @@
         document.querySelectorAll('.dropdown-item').forEach(typeExportFile => {
             typeExportFile.addEventListener('click', async function (event) {
                 const typeFileText = event.target.innerText;
-                const title = document.getElementById('title-novel').innerHTML;
+                const title = document.getElementById('title-novel').innerHTML.trim();
+                const titleChapter = document.getElementById('title-chapter').innerHTML.trim();
                 const content = document.getElementById('content-chapter').innerHTML;
-                console.log(content);
-                console.log(title);
-                $.get('/abc', (data) => {
-                    console.log('Data from server:', data);
-                })
-                    .fail((xhr, status, error) => {
-                        console.error('Error:', error);
+                try {
+                    dataSend = { typeFile: typeFileText, title: title, content: content }
+                    console.log(dataSend);
+                    const response = await fetch('/download', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(dataSend)
                     });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    // Chuyển đổi phản hồi thành một blob
+                    const blob = await response.blob();
+
+                    // Tạo một URL tạm thời cho blob
+                    const url = window.URL.createObjectURL(blob);
+
+                    // Tạo một phần tử a tạm thời để tải xuống file
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${title +" "+ titleChapter}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+
+                    // Giải phóng URL tạm thời
+                    window.URL.revokeObjectURL(url);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
             });
         });
-
-
     </script>
 
-
-    <script>
-        // try {
-        //     dataSend = { typeFile: typeFileText, title: title, content: content }
-        //     console.log(dataSend);
-        //     const response = await fetch('/download', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify(dataSend)
-        //     });
-
-        //     if (!response.ok) {
-        //         throw new Error('Network response was not ok');
-        //     } else {
-        //         console.log("abcdefg")
-        //     }
-        //     const responseData = await response.json();
-        //     console.log('Response Data:', responseData);
-        // } catch (error) {
-        //     console.error('Error:', error);
-        // }
-
-    </script>
 </body>
 
 </html>
