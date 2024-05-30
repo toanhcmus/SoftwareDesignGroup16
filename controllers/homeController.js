@@ -98,6 +98,7 @@ const searchBook = async (keyword) => {
 };
 class HomeController {
     async renderHome(req, res, next) {
+        
         const keywordSearch = req.query.keyword || '';
         let isSearched=true;
         if(keywordSearch===''){

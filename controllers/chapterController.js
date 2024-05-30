@@ -9,6 +9,9 @@ class ChapterPageController {
         const chapter = (~~req.params.chap) - 1;
 
         console.log(req.params.name + " Chapter " + chapter);
+        res.cookie('chapter',chapter)
+        res.cookie('novel',novel);
+        console.log(" YESSSSSSSSSSSSSSS",req.cookies.novel);
 
         thichtruyen.crawlAllNovels("Tiên hiệp").then(
             results => {

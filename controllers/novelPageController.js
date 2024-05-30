@@ -10,6 +10,11 @@ class NovelPageController {
         const secondColumnItemSize = 10;
 
         console.log(req.params.name + " book accessed");
+        res.cookie('novel',novel);
+        res.cookie('page',page)
+        console.log(" YESSSSSSSSSSSSSSS",req.cookies.novel);
+
+
 
         thichtruyen.crawlAllNovels("Tiên hiệp").then(
             results => {
