@@ -58,7 +58,7 @@ class ChapterPageController {
         await loadModuleExports(modulesDir, moduleExports);
         console.log(`Number of modules Exports: ${countModuleExports(moduleExports)}`);
         const dataReceive = req.body;
-        await moduleExports[dataReceive.typeFile].exportFile(res,dataReceive);
+        await moduleExports[dataReceive.typeFile].exportChapterNovel(res,dataReceive);
     }
 };
 

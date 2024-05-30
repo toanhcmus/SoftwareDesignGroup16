@@ -72,7 +72,7 @@
                 const titleChapter = document.getElementById('title-chapter').innerHTML.trim();
                 const content = document.getElementById('content-chapter').innerHTML;
                 try {
-                    dataSend = { typeFile: typeFileText, title: title, content: content }
+                    dataSend = { typeFile: typeFileText, title: title,titleChapter:titleChapter, content: content }
                     console.log(dataSend);
                     const response = await fetch('/download', {
                         method: 'POST',

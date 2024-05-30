@@ -1,23 +1,48 @@
-const PDFDocument = require('pdfkit');
 const path = require('path');
+const fs = require('fs');
+const Epub = require('epub-gen');
 module.exports = {
-  exportFile: (res, data) => {
-    const doc = new PDFDocument();
+  exportChapterNovel: async (res, dataNovel) => {
+    const myContent = dataNovel.content;
 
-    res.setHeader('Content-disposition', 'attachment; filename=output.pdf');
-    res.setHeader('Content-type', 'application/pdf');
+    const options = {
+      title: `${dataNovel.title}`,
+      author: "Author Name",
+      content: [
+        {
+          title: `${dataNovel.titleChapter}`,
+          data: myContent
+        }
+        // ,{
+        //   title: "Chương 2",
+        //   data: myContent
+        // }
+      ]
+    };
 
-    doc.pipe(res);
+    const outputPath = path.join(__dirname, 'temporaryNovel.epub');
 
-    // Add a custom font that supports UTF-8 characters
-    const fontPath = path.join(__dirname, '..', 'public', 'fonts', 'DejaVuSans.ttf'); // Ensure the font file is in this path
-    doc.registerFont('DejaVuSans', fontPath);
+    try {
+      await new Epub(options, outputPath).promise;
 
-    // Use the custom font
-    doc.font('DejaVuSans');
+      // Set the response headers
+      res.setHeader('Content-disposition', 'attachment');
+      res.setHeader('Content-type', 'application/epub+zip');
 
-    doc.text("Đây là nội dung file tải dề với duôi là epub nhưng chưa hoàn thành");
+      // Send the EPUB file to the client
+      res.download(outputPath, 'temporaryNovel.epub', (err) => {
+        if (err) {
+          console.error('Error sending the EPUB file:', err);
+          res.status(500).send('Error generating EPUB');
+        }
 
-    doc.end();
+        // Delete the EPUB file after sending
+        fs.unlinkSync(outputPath);
+      });
+    } catch (error) {
+      console.error('Error generating the EPUB:', error);
+      res.status(500).send('Error generating EPUB');
+    }
+
   }
 }

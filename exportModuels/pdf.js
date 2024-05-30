@@ -1,10 +1,10 @@
 const PDFDocument = require('pdfkit');
 const path = require('path');
 module.exports = {
-  exportFile: async (res, data) => {
+  exportChapterNovel: async (res, dataNovel) => {
     const doc = new PDFDocument();
 
-    res.setHeader('Content-disposition', 'attachment; filename=output.pdf');
+    res.setHeader('Content-disposition', 'attachment');
     res.setHeader('Content-type', 'application/pdf');
 
     doc.pipe(res);
@@ -17,7 +17,7 @@ module.exports = {
     doc.font('DejaVuSans');
 
     // Add content to the PDF
-    doc.text(data.content);
+    doc.text(dataNovel.title+ "\n"+ dataNovel.titleChapter + "\n" + dataNovel.content);
 
     doc.end();
   }

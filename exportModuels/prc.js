@@ -1,7 +1,7 @@
 const PDFDocument = require('pdfkit');
 const path = require('path');
 module.exports = {
-  exportFile: (res, data) => {
+  exportChapterNovel: async (res, data) => {
     const doc = new PDFDocument();
 
     res.setHeader('Content-disposition', 'attachment; filename=output.pdf');
