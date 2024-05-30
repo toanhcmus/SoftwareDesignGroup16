@@ -43,6 +43,7 @@
                             <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                         </div>
                     </form>
+                    <button type="button" class="btn btn-success btn-lg" onclick="saveStates()">Nguyễn Song Toàn chạy DL nhanh lên</button>
                 </div>
 
                 <div class="col-md-4">
@@ -207,6 +208,24 @@
                             });
                         }
 
+                    }
+                }
+                async function saveStates(){
+                    console.log('aaaaaaaaaa')
+                    try {
+                        const response = await fetch('/novel/saveStates', {
+                            method: 'GET'
+                        });
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        const data = await response.json();
+                        console.log('Success:', data);
+                        if (data.redirect) {
+                            window.location.href = data.redirect;
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
                     }
                 }
             </script>
