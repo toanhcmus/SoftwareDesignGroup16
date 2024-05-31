@@ -55,7 +55,7 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><button class="dropdown-item">prc</button></li>
+                    <li><button class="dropdown-item">kpf</button></li>
                 </ul>
             </div>
         </div>
@@ -95,7 +95,7 @@
                     // Tạo một phần tử a tạm thời để tải xuống file
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `${title +" "+ titleChapter}`;
+                    a.download = `${title +" "+ titleChapter +"."+typeFileText}`;
                     document.body.appendChild(a);
                     a.click();
                     a.remove();

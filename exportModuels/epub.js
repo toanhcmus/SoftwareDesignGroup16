@@ -30,7 +30,16 @@ module.exports = {
       res.setHeader('Content-type', 'application/epub+zip');
 
       // Send the EPUB file to the client
-      res.download(outputPath, 'temporaryNovel.epub', (err) => {
+      // res.download(outputPath, 'temporaryNovel.epub', (err) => {
+      //   if (err) {
+      //     console.error('Error sending the EPUB file:', err);
+      //     res.status(500).send('Error generating EPUB');
+      //   }
+
+      //   // Delete the EPUB file after sending
+      //   fs.unlinkSync(outputPath);
+      // });
+      res.download(outputPath, (err) => {
         if (err) {
           console.error('Error sending the EPUB file:', err);
           res.status(500).send('Error generating EPUB');
