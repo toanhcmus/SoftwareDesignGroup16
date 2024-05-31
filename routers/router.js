@@ -5,7 +5,7 @@ const controller = require('../controllers/homeController.js');
 const chapterController = require('../controllers/chapterController.js');
 
 router.use(bodyParser.urlencoded({ extended: true }));
-router.post('/download',chapterController.reloadModuleExports);
+router.post('/download',chapterController.sendFileExportToClient);
 
 router.get('/',controller.renderHome)
 

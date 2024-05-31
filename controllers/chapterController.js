@@ -1,5 +1,6 @@
 const { forever } = require('request-promise');
 const path = require('path');
+const fs=require('fs')
 const thichtruyen = require('../modules/tangthuvien.js');
 const stringUtil = require('../utilities/stringUtil.js');
 
@@ -7,6 +8,18 @@ const { countModuleExports, loadModuleExports } = require('../utilities/exportLo
 const modulesDir = path.join(__dirname, '..', 'exportModuels');
 let moduleExports = {};
 
+let debounceTimeout;
+const DEBOUNCE_DELAY = 500;
+
+fs.watch(modulesDir, (eventType, filename) => {
+    if (filename && filename.endsWith('.js')) {
+        console.log(`Detected changes in ${filename}, scheduling reload...`);
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(async () => {
+            await loadModuleExports(modulesDir, moduleExports);
+        }, DEBOUNCE_DELAY);
+    }
+});
 
 
 
@@ -52,7 +65,7 @@ class ChapterPageController {
         //console.log('Rendering novel page!');
     }
 
-    async reloadModuleExports(req, res) {
+    async sendFileExportToClient(req, res) {
         console.log('Reloading modules Exports...');
         moduleExports = {};
         await loadModuleExports(modulesDir, moduleExports);
