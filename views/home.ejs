@@ -28,13 +28,7 @@
         <div class="filter-section">
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="select-option" class="form-label">Chọn option:</label>
-                    <select id="select-option" class="form-select">
-                        <option value="">Chọn truyện</option>
-                        <option value="a">truyenfull.vn</option>
-                        <option value="b">b</option>
-                        <option value="c">c</option>
-                    </select>
+                    <button class="btn btn-primary">Save State</button>
                 </div>
                 <div class="col-md-4">
                     <form method="GET">
@@ -111,7 +105,7 @@
                         <% for(var i=0; i<novels.length; i++) {%>
                             <div class="col">
                                 <div class="card">
-                                    <img src="<%= novels[i].cover %>" class="card-img-top" alt="Card Image">
+                                    <img src="<%= novels[i].cover || novels[i].image %>" class="card-img-top" alt="Card Image">
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             <%= novels[i].title %>
