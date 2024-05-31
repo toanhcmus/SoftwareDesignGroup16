@@ -130,8 +130,41 @@ async function getChapters(storyId) {
   
         page++;
       }
+
+      const formatChaptersList = [];
+
+      for (let i = 0; i < chapterList.length; i++) {
+        console.log(i);
+        if (i === 0) {
+          const item = {
+            id: chapterList[i].id,
+            title: chapterList[i].title,
+            previous: 0,
+            next: chapterList[i+1].id
+          }
+          formatChaptersList.push(item);
+        } else {
+          if (i === chapterList.length - 1) {
+            const item = {
+              id: chapterList[i].id,
+              title: chapterList[i].title,
+              previous: chapterList[i-1].id,
+              next: 0
+            }
+            formatChaptersList.push(item);
+          } else {
+            const item = {
+              id: chapterList[i].id,
+              title: chapterList[i].title,
+              previous: chapterList[i-1].id,
+              next: chapterList[i+1].id,
+            }
+            formatChaptersList.push(item);
+          }
+        }
+      }
   
-      return chapterList;
+      return formatChaptersList;
     } catch (error) {
       console.error(`Lỗi khi lấy danh sách chương của truyện ${storyId}:`, error);
       return [];
@@ -147,7 +180,7 @@ async function getChapterDetails(chapterId) {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
         }
       });
-      return response.data;
+      return response.data.data;
     } catch (error) {
       console.error(`Lỗi khi lấy chi tiết chương ${chapterId}:`, error);
       return null;

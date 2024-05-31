@@ -8,4 +8,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.route("/:name/chapter=:chap").get(chapterController.renderChapterPage);
 
+router.route("/name=:name/src=:src/chapter=:chap").get(chapterController.renderChapterPage);
+
 module.exports = router;

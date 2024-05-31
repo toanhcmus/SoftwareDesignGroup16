@@ -110,7 +110,7 @@ async function crawlAllNovels(keyword) {
 
     }
 
-    console.log(novels);
+    // console.log(novels);
     return novels;
 }
 
