@@ -9,14 +9,14 @@ module.exports = {
 
     doc.pipe(res);
 
-    // Add a custom font that supports UTF-8 characters
+    // Add định dạng để không bị lôi font
     const fontPath = path.join(__dirname, '..', 'public', 'fonts', 'DejaVuSans.ttf'); // Ensure the font file is in this path
     doc.registerFont('DejaVuSans', fontPath);
 
-    // Use the custom font
+    // Add cái font vào
     doc.font('DejaVuSans');
 
-    // Add content to the PDF
+    // Add nội dung vào
     doc.text(dataNovel.title+ "\n"+ dataNovel.titleChapter + "\n" + dataNovel.content);
 
     doc.end();

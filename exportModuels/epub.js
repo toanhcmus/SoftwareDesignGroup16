@@ -24,8 +24,8 @@ module.exports = {
 
     try {
       await new Epub(options, outputPath).promise;
-
-      // Set the response headers
+      console.log("-----------abc")
+      // Set header cho response
       res.setHeader('Content-disposition', 'attachment');
       res.setHeader('Content-type', 'application/epub+zip');
 
@@ -45,7 +45,7 @@ module.exports = {
           res.status(500).send('Error generating EPUB');
         }
 
-        // Delete the EPUB file after sending
+        // Xóa file epub tạm thời tạo ra
         fs.unlinkSync(outputPath);
       });
     } catch (error) {

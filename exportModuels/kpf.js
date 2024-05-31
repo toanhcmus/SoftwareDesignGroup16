@@ -7,7 +7,7 @@ module.exports = {
     const epubPath = path.join(__dirname, 'output.epub');
     const kpfPath = path.join(__dirname, 'KPF', 'output.kpf');
 
-    // Tạo file ePub từ nội dung
+    // Tạo file ePub từ nội dung, rồi sau đó tải xuống epub để chuyển sang kpf chứ không xuất trực tiếp được
     const epubOptions = {
       title: dataNovel.title,
       content: [
@@ -18,7 +18,6 @@ module.exports = {
       ]
     };
 
-    //Tạo file Epub tạm thời để chuyển sang kdf
     try {
       await new Epub(epubOptions, epubPath).promise;
       console.log('Tạo file ePub ở kpf thành công');
@@ -39,24 +38,24 @@ module.exports = {
       if (stderr) {
         console.error(`Kindle Previewer stderr: ${stderr}`);
       }
-      // console.log(`Kindle Previewer stdout: ${stdout}`);
+
       console.log('kpf file created successfully!');
 
-      // Gửi file PRC tới client
+      // Gửi file kpf tới client
       res.setHeader('Content-disposition', 'attachment');
       res.setHeader('Content-type', 'application/x-mobipocket-ebook');
-      // const fileStream = fs.createReadStream(prcPath);
-      // fileStream.pipe(res);
+
       res.download(kpfPath, (err) => {
         if (err) {
           console.error('Error sending the file kpf:', err);
           res.status(500).send('Error generating kpf');
         }
+        //Xóa file thư mục tạo ra do việc convert
         try {
-          fs.rmSync(path.join(__dirname, 'KPF'), { recursive: true, force: true });
-          fs.rmSync(path.join(__dirname, 'Logs'), { recursive: true, force: true });
           fs.unlinkSync(epubPath);
           fs.unlinkSync(path.join(__dirname, 'Summary_Log.csv'));
+          fs.rmSync(path.join(__dirname, 'KPF'), { recursive: true, force: true });
+          fs.rmSync(path.join(__dirname, 'Logs'), { recursive: true, force: true });
         } catch (err) {
           console.error(`Lỗi xóa thư mục`, err);
         }
