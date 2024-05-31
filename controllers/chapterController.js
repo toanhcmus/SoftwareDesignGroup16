@@ -20,8 +20,9 @@ class ChapterPageController {
         
 
         console.log(req.params.name + " Chapter " + chapter);
-        res.cookie('chapter',chapter+1)
+        res.cookie('chapter',chapter)
         res.cookie('novel',novel);
+        res.cookie('src',src)
         console.log(" YESSSSSSSSSSSSSSS",req.cookies.novel);
 
         let module = tangthuvien;
