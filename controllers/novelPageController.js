@@ -12,6 +12,7 @@ class NovelPageController {
         console.log(req.params.name + " book accessed");
         res.cookie('novel',novel);
         res.cookie('page',page)
+        res.cookie('chapter',0);
         console.log(" YESSSSSSSSSSSSSSS",req.cookies.novel);
 
 
@@ -67,7 +68,7 @@ class NovelPageController {
                                     chapterList2: chapColList2,
                                     pagination: pagignationSection
                                 };
-                
+                                res.cookie('renderItems',renderItems);
                                 res.render('novelPage', renderItems);                            
                             }
                         );
@@ -76,6 +77,19 @@ class NovelPageController {
         });
 
         console.log('Rendering novel page!');
+    }
+    saveStates (req,res,next){
+        console.log('SAVESTATES');
+        if (req.cookies.novel) {
+            if (req.cookies.chapter==0)
+                res.json({ redirect: `/novel/${req.cookies.novel}/page=1` });
+            else 
+                res.json({ redirect: `/novel/${req.cookies.novel}/chapter=${req.cookies.chapter}` });
+
+        } else {
+            res.json({ message: 'renderItems not found in cookies' });
+        }
+        
     }
 };
 

@@ -9,7 +9,7 @@ class ChapterPageController {
         const chapter = (~~req.params.chap) - 1;
 
         console.log(req.params.name + " Chapter " + chapter);
-        res.cookie('chapter',chapter)
+        res.cookie('chapter',chapter+1)
         res.cookie('novel',novel);
         console.log(" YESSSSSSSSSSSSSSS",req.cookies.novel);
 
