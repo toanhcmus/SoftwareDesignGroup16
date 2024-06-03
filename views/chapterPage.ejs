@@ -17,22 +17,116 @@
             <H5>
                Chương <%= chapter%>
             </H5>
-            <div class="flex-container-horizontal">
+            <div class="flex-container-horizontal toolbar">
+                <button class="previous-chapter-button back-button" onclick="<%= novelPage%>">
+                    <span>
+                        Quay lại
+                    </span>
+                </button>
+
                 <button class="previous-chapter-button" onclick="<%= previousPage%>">
                     <span>
                         Trước
                     </span>
                 </button>
+                <select>
+                </select>
                 <button class="next-chapter-button" onclick="<%= nextPage%>">
                     <span>
                         Sau
                     </span>   
                 </button>
+
+                <button class="toolbar-button" onclick="handleToolbar()">
+                    <span>
+                        Công cụ
+                    </span>   
+                </button>
+
+            </div>
+
+            <div class="flex-container-horizontal toolbar hidden" id="toolbar">
+                <div>
+                    <label for="text-color">Màu chữ</label>
+                    <input type="color" style="border:none" id="text-color" onchange="changeTextColor()">
+                </div>
+
+                <div>
+                    <label for="background-color">Màu nền</label>
+                    <input type="color" style="border:none" id="background-color" onchange="changeBackgroundColor()">
+                </div>
+
+                <div>
+                    <label for="font-size">Cỡ chữ</label>
+                    <input type="number" style="border:none" id="font-size" onchange="changeFontSize()">
+                </div>
+
+                <div>
+                    <label for="font-name">Font chữ</label>
+                    <input type="number" style="border:none" id="font-name">
+                </div>
+
+                <div>
+                    <label for="line-spacing">Khoảng cách dòng</label>
+                    <input type="number" style="border:none" id="line-spacing" onchange="changeLineSpacing()">
+                </div>
             </div>
         </div>
-    
-            <div class="flex-container-vertical main-container drop-shadow chapter">
+
+
+
+        <div class="flex-container-vertical main-container drop-shadow chapter" id="content">
                 <%= content%>
-            </div>
+        </div>
     </body>
+
+    <script>
+        
+        async function setUpPage(e) {
+            e.preventDefault();
+        }
+
+        function changeFontSize() {
+            var novel = document.getElementById("content");
+            const fontSize = document.getElementById("font-size").value;
+            
+            novel.style.setProperty("font-size", `${fontSize}px`);
+            console.log(`Changed Font size to ${fontSize}px`);
+        }
+
+        function changeTextColor() {
+            var novel = document.getElementById("content");
+            const textColor = document.getElementById("text-color").value;
+
+            novel.style.setProperty("color", `${textColor}`);
+            console.log("changed color");
+        }
+
+        function changeBackgroundColor() {
+            var novel = document.getElementById("content");
+            const backgroundColor = document.getElementById("background-color").value;
+
+            novel.style.setProperty("background-color", `${backgroundColor}`);
+            console.log("changed color");
+        }
+
+        function changeLineSpacing() {
+            var novel = document.getElementById("content");
+            const lineSpacing = document.getElementById("line-spacing").value;
+
+            novel.style.setProperty("line-height", `${lineSpacing}`);
+            console.log("changed color");
+        }
+
+        function handleToolbar() {
+            var toolbar = document.getElementById('toolbar');
+            if (toolbar.classList.contains('hidden')) {
+                toolbar.classList.remove('hidden');
+
+                return;
+            }
+
+            toolbar.classList.add('hidden');
+        }
+    </script>
 </html>

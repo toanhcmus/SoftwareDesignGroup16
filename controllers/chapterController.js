@@ -5,12 +5,19 @@ const stringUtil = require('../utilities/stringUtil.js')
 class ChapterPageController {
     renderChapterPage(req, res) {
         const novel = req.params.name;
+        const keyword = req.params.keyword.replace('-', ' ');
 
         const chapter = (~~req.params.chap) - 1;
 
+        if (chapter < 1) {
+            res.render('notFound');
+
+            return;
+        }
+
         console.log(req.params.name + " Chapter " + chapter);
 
-        thichtruyen.crawlAllNovels("Tiên hiệp").then(
+        thichtruyen.crawlAllNovels(keyword).then(
             results => {
                 results.forEach(item => {
                     console.log(item + " Searched");
@@ -21,17 +28,26 @@ class ChapterPageController {
                     
                         const cover = item.cover;
                         const title = item.title;
-                        console.log(item);    
+                        console.log(item);
                         
                         thichtruyen.fetchChapterList(item.detailLink).then(
                             result => {
+                                if (result.length < chapter + 1) {
+                                    res.render('notFound');
+                            
+                                    return;
+                                } 
+
                                 console.log(result[chapter]);
                                 thichtruyen.crawlChapter(result[chapter]).then(
                                     chap => {
                                         res.render('chapterPage', {
+                                            novelPage: "document.location='page=1'",
                                             previousPage: `document.location='chapter=${chapter}'`,
                                             nextPage: `document.location='chapter=${chapter + 2}'`,
                                             title: title, chapter: chapter + 1, content: chap});
+
+                                        return;
                                     }
                                 );
                             }

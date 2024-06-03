@@ -1,9 +1,20 @@
 const { forever } = require('request-promise');
 const thichtruyen = require('../modules/tangthuvien.js');
-const stringUtil = require('../utilities/stringUtil.js')
+const stringUtil = require('../utilities/stringUtil.js');
+const path = require('path');
+const fs = require('fs');
+const { countModules, loadModules } = require('../utilities/moduleLoader.js');
+
+let debounceTimeout;
+const DEBOUNCE_DELAY = 500;
+
+const modulesDir = path.join(__dirname, '..', 'modules');
+let modules = {};
 
 class NovelPageController {
-    renderNovelPage(req, res) {
+    async renderNovelPage(req, res) {
+        await loadModules();
+        const keyword = req.params.keyword.replace('-', ' ');
         const novel = req.params.name;
         const page = (~~req.params.page) - 1;
         const firstColumnItemSize = 10;
@@ -11,7 +22,7 @@ class NovelPageController {
 
         console.log(req.params.name + " book accessed");
 
-        thichtruyen.crawlAllNovels("Tiên hiệp").then(
+        thichtruyen.crawlAllNovels(keyword).then(
             results => {
                 results.forEach(item => {
                     console.log(item + " Searched");
@@ -29,8 +40,7 @@ class NovelPageController {
                         let pagignationSection = "";
         
                         thichtruyen.fetchChapterList(item.detailLink).then(
-                            results => {
-                                let count = 1;
+                            results => { let count = 1;
                                 let chapterNumber = results.length;
                                 let totalItem = firstColumnItemSize + secondColumnItemSize;
                                 let totalPage = (chapterNumber + totalItem - 1) / totalItem;
