@@ -84,7 +84,8 @@
 
     <script>
         var fonts = ["JetBrains Mono", "Montez","Lobster","Josefin Sans","Shadows Into Light","Pacifico","Amatic SC", "Orbitron", "Rokkitt","Righteous","Dancing Script","Bangers","Chewy","Sigmar One","Architects Daughter","Abril Fatface","Covered By Your Grace","Kaushan Script","Gloria Hallelujah","Satisfy","Lobster Two","Comfortaa","Cinzel","Courgette"];
-
+        window.onscroll = function() {scrollFunction()};
+        
         function getFontSize() {
             return document.getElementById("font-size").value;
         }
@@ -325,7 +326,6 @@
             }
         }
 
-        window.onscroll = function() {scrollFunction()};
         initializeFontSelector(fonts);
         initializeChapterSelector();
         checkCookie();

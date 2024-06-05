@@ -335,6 +335,7 @@ body {
     margin: 10px;
     margin-left: 15px;
     border-radius: 50%;
+    display: none;
 }
 
 #back-to-top-btn:hover{
