@@ -7,9 +7,11 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Montez|Lobster|Josefin+Sans|Shadows+Into+Light|Pacifico|Amatic+SC:700|Orbitron:400,900|Rokkitt|Righteous|Dancing+Script:700|Bangers|Chewy|Sigmar+One|Architects+Daughter|Abril+Fatface|Covered+By+Your+Grace|Kaushan+Script|Gloria+Hallelujah|Satisfy|Lobster+Two:700|Comfortaa:700|Cinzel|Courgette' rel='stylesheet' type='text/css'>
     </head>
 
     <body>
+        <button id="back-to-top-btn" class="drop-shadow-5px" onclick="scrollToTop()"> ^ </button>
         <div class="flex-container-vertical top-container">
             <H3>
                 <%= title%>
@@ -18,7 +20,7 @@
                Chương <%= chapter%>
             </H5>
             <div class="flex-container-horizontal toolbar">
-                <button class="previous-chapter-button back-button" onclick="<%= novelPage%>">
+                <button class="previous-chapter-button back-button" onclick="back()">
                     <span>
                         Quay lại
                     </span>
@@ -29,7 +31,8 @@
                         Trước
                     </span>
                 </button>
-                <select>
+                <select id="chapter-selector" onchange="onChapterSelected()">
+                    <%- chapterList %>
                 </select>
                 <button class="next-chapter-button" onclick="<%= nextPage%>">
                     <span>
@@ -44,54 +47,149 @@
                 </button>
 
             </div>
-
-            <div class="flex-container-horizontal toolbar hidden" id="toolbar">
-                <div>
-                    <label for="text-color">Màu chữ</label>
-                    <input type="color" style="border:none" id="text-color" onchange="changeTextColor()">
-                </div>
-
-                <div>
-                    <label for="background-color">Màu nền</label>
-                    <input type="color" style="border:none" id="background-color" onchange="changeBackgroundColor()">
-                </div>
-
-                <div>
-                    <label for="font-size">Cỡ chữ</label>
-                    <input type="number" style="border:none" id="font-size" onchange="changeFontSize()">
-                </div>
-
-                <div>
-                    <label for="font-name">Font chữ</label>
-                    <input type="number" style="border:none" id="font-name">
-                </div>
-
-                <div>
-                    <label for="line-spacing">Khoảng cách dòng</label>
-                    <input type="number" style="border:none" id="line-spacing" onchange="changeLineSpacing()">
-                </div>
+                <div class="flex-container-horizontal toolbar hidden" id="toolbar">
+                        <div>
+                            <label for="text-color">Màu chữ</label>
+                            <input type="color" style="border:none" id="text-color" onchange="changeTextColor()">
+                        </div>
+        
+                        <div>
+                            <label for="background-color">Màu nền</label>
+                            <input type="color" style="border:none" id="background-color" onchange="changeBackgroundColor()">
+                        </div>
+        
+                        <div>
+                            <label for="font-size">Cỡ chữ</label>
+                            <input type="number" style="border:none" id="font-size" onchange="changeFontSize()">
+                        </div>
+        
+        
+                        <div>
+                            <label for="line-spacing">Khoảng cách dòng</label>
+                            <input type="number" style="border:none" id="line-spacing" onchange="changeLineSpacing()">
+                        </div>
+                        <label for="font-name">Font chữ</label>
+                        <select id="font-name" onchange="onFontChanged()">
+                        </select>
+                    </div>
             </div>
-        </div>
+
 
 
 
         <div class="flex-container-vertical main-container drop-shadow chapter" id="content">
-                <%= content%>
+                <%- content%>
         </div>
     </body>
 
     <script>
-        
-        async function setUpPage(e) {
-            e.preventDefault();
+        var fonts = ["JetBrains Mono", "Montez","Lobster","Josefin Sans","Shadows Into Light","Pacifico","Amatic SC", "Orbitron", "Rokkitt","Righteous","Dancing Script","Bangers","Chewy","Sigmar One","Architects Daughter","Abril Fatface","Covered By Your Grace","Kaushan Script","Gloria Hallelujah","Satisfy","Lobster Two","Comfortaa","Cinzel","Courgette"];
+
+        function getFontSize() {
+            return document.getElementById("font-size").value;
+        }
+
+        function initializeChapterSelector() {
+            var chapterSelector = document.getElementById("chapter-selector");
+            chapterSelector.options[<%= chapter%> - 1].selected = true;
+        }
+
+        function initializeFontSelector(fontList) {
+            var fontSelector = document.getElementById("font-name")
+
+            for(var a = 0; a < fonts.length ; a++){
+                var opt = document.createElement('option');
+                opt.value = opt.innerHTML = fonts[a];
+                opt.style.fontFamily = fonts[a];
+                fontSelector.add(opt);
+            }
+        }
+
+        function onFontChanged() {
+            var fontSelector = document.getElementById("font-name");
+            var font = fontSelector.options[fontSelector.selectedIndex].text;
+
+            var novel = document.getElementById("content");
+
+            novel.style.setProperty("font-family", `${font}`);
+            storeData();
+        }
+
+        function setFont(font) {
+            var novel = document.getElementById("content");
+            var fontSelector = document.getElementById("font-name");
+
+            for (var i = 0; i < fontSelector.options.length; ++i) {
+                if (fontSelector.options[i].text === font) {
+                    fontSelector.options[i].selected = true;
+                }
+            }
+
+            novel.style.setProperty("font-family", `${font}`);
+            storeData();
+        }
+
+        function setFontSize(fontSize) {
+            var novel = document.getElementById("content");
+            document.getElementById("font-size").value = ~~fontSize;
+            novel.style.setProperty("font-size", `${fontSize}px`);
+            storeData();
+        }
+
+        function getTextColor() {
+            return document.getElementById("text-color").value;
+        }
+
+        function getBackgroundColor() {
+            return document.getElementById("background-color").value;
+        }
+
+        function getLineSpacing() {
+            return document.getElementById("line-height").value;
+        }
+
+        function setLineSpacing(lineSpacing) {
+            var novel = document.getElementById("content");
+            document.getElementById("line-spacing").value = ~~lineSpacing;
+            novel.style.setProperty("line-height", `${lineSpacing}`);
+            storeData();
+        }
+
+        function setBackgroundColor(backgroundColor) {
+            var novel = document.getElementById("content");
+            document.getElementById("background-color").value = backgroundColor;
+            novel.style.setProperty("background-color", `${backgroundColor}`);
+            storeData();
+        }
+
+        function setTextColor(textColor) {
+            var novel = document.getElementById("content");
+            document.getElementById("text-color").value = textColor;
+            novel.style.setProperty("Color", `${textColor}`);
+            storeData();
         }
 
         function changeFontSize() {
             var novel = document.getElementById("content");
-            const fontSize = document.getElementById("font-size").value;
-            
+            var fontSize = document.getElementById("font-size").value;
+
+            if (fontSize < 1) {
+                alert("Kích thước font không thể nhỏ hơn 1");
+                document.getElementById("font-size").value = 1;
+                fontSize = 1;
+                novel.style.setProperty("font-size", `${fontSize}px`);
+                return;
+            }
+
             novel.style.setProperty("font-size", `${fontSize}px`);
             console.log(`Changed Font size to ${fontSize}px`);
+
+            storeData();
+        }
+
+        function onChapterSelected() {
+            var chapterSelector = document.getElementById("chapter-selector");
+            document.location = `chapter=${chapterSelector.selectedIndex + 1}`
         }
 
         function changeTextColor() {
@@ -100,6 +198,7 @@
 
             novel.style.setProperty("color", `${textColor}`);
             console.log("changed color");
+            storeData();
         }
 
         function changeBackgroundColor() {
@@ -108,6 +207,7 @@
 
             novel.style.setProperty("background-color", `${backgroundColor}`);
             console.log("changed color");
+            storeData();
         }
 
         function changeLineSpacing() {
@@ -116,6 +216,7 @@
 
             novel.style.setProperty("line-height", `${lineSpacing}`);
             console.log("changed color");
+            storeData();
         }
 
         function handleToolbar() {
@@ -128,5 +229,105 @@
 
             toolbar.classList.add('hidden');
         }
+
+        function back() {
+            document.location = 'page=1';
+        }
+
+        function storeData() {
+            const fontSize = document.getElementById("font-size").value;
+            const textColor = document.getElementById("text-color").value;
+            const backgroundColor = document.getElementById("background-color").value;
+            const lineSpacing = document.getElementById("line-spacing").value;
+            const font = document.getElementById("font-name").options[document.getElementById("font-name").selectedIndex].text;
+
+            document.cookie = "font-size=" + fontSize + ";path=/";
+            document.cookie = "text-color=" + textColor + ";path=/";
+            document.cookie = "background-color=" + backgroundColor + ";path=/";
+            document.cookie = "line-spacing=" + lineSpacing + ";path=/";
+            document.cookie = "font=" + font + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+
+            return "";
+        }
+
+        function checkCookie() {
+            const fontSize = getCookie("font-size");
+            const textColor = getCookie("text-color");
+            const backgroundColor = getCookie("background-color");
+            const lineSpacing = getCookie("line-spacing");
+            const font = getCookie("font");
+
+            if (fontSize != "") {
+                setFontSize(fontSize);
+            } else {
+                setFontSize("13");
+            }
+
+            if (textColor != "") {
+                setTextColor(textColor);
+            } else {
+                setTextColor("#000000");
+            }
+
+            if (textColor != "") {
+                setTextColor(textColor);
+            } else {
+                setTextColor("#000000");
+            }
+
+            if (backgroundColor != "") {
+                setBackgroundColor(backgroundColor);
+            } else {
+                setBackgroundColor("#EDEBDF");
+            }
+
+            if (lineSpacing != "") {
+                setLineSpacing(lineSpacing);
+            } else {
+                setLineSpacing("1");
+            }
+            
+            if (font != "") {
+                setFont(font);
+            } else {
+                setFont("inherit");
+            }
+
+            console.log('Cookie Checked');
+            storeData();
+        }
+
+        function scrollToTop() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("back-to-top-btn").style.display = "block";
+            } else {
+                document.getElementById("back-to-top-btn").style.display = "none";
+            }
+        }
+
+        window.onscroll = function() {scrollFunction()};
+        initializeFontSelector(fonts);
+        initializeChapterSelector();
+        checkCookie();
     </script>
 </html>

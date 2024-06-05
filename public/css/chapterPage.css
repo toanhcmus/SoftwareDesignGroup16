@@ -110,6 +110,11 @@ body {
     box-shadow: -10px 10px 4px slategray;
 }
 
+.drop-shadow-5px {
+    box-shadow: -5px 5px 4px slategray;
+    display: block;
+}
+
 .description-section {
     align-self: self-start;
     width: 50%;
@@ -303,4 +308,35 @@ body {
     transition: all 2s ease-in-out;
     transform-origin: left top;
     transform: scaleY(1);
+
+    width: 100%;
+}
+
+#font-name {
+    width: fit-content;
+    font-family: 'JetBrains Mono';
+}
+
+#chapter-selector {
+    width: fit-content;
+    font-family: 'JetBrains Mono';
+}
+
+
+#back-to-top-btn {
+    background-color: #1E1E1E;
+    border: none;
+    color: white;
+    font-family: 'JetBrains Mono';
+    position: fixed;
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    margin-left: 15px;
+    border-radius: 50%;
+}
+
+#back-to-top-btn:hover{
+    background-color: #505f88;
 }

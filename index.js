@@ -1,14 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
-const cookie = require('cookie-parser')
 const app = express();
 const port = 3000;
-
+const cookie=require('cookie-parser')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-
+app.use(cookie());
 // Controllers
 
 // Routes
