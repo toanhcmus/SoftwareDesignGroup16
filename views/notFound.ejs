@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>HappyGroup</title>
+        <link type="text/css" href="/css/notFound.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="flex-container-vertical main-container drop-shadow">
+            <p class="not-found">404</p>
+            <h3>Chà, chúng mình không tìm thấy trang này!</h3>
+            <h5>Hãy đảm bảo rằng đường dẫn của bạn là chính xác nhé!</h5>
+
+            <div class="flex-container-horizontal">
+                <button class="previous-chapter-button" onclick="returnToHome()">
+                    <span> 
+                        Về trang chủ
+                    </span>
+                </button>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        function returnToHome() {
+            document.location = "/";
+        }
+    </script>
+</html>

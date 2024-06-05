@@ -51,43 +51,63 @@ class ChapterPageController {
                 
                 console.log(item + " Searched");
 
-                const itemName = item.title;
+                    const itemName = stringUtil.reformatForUrlHandling(item.title);
 
-                if (novel.localeCompare(itemName) == 0) {
-                
-                    const cover = item.cover;
-                    const title = item.title;
-                    // console.log(item);    
+                    if (novel.localeCompare(itemName) == 0) {
                     
-                    if (module == thichtruyen || module == tangthuvien) {
-                        module.fetchChapterList(item.detailLink).then(
-                            result => {
-                                console.log(result[chapter]);
-                                module.crawlChapter(result[chapter]).then(
-                                    chap => {
-                                        res.render('chapterPage', {
-                                            previousPage: `document.location='chapter=${chapter}'`,
-                                            nextPage: `document.location='chapter=${chapter + 2}'`,
-                                            title: title, chapter: chapter + 1, content: chap});
+                        const cover = item.cover;
+                        const title = item.title;
+                        // console.log(item);    
+                        
+                        if (module == thichtruyen || module == tangthuvien) {
+                            module.fetchChapterList(item.detailLink).then(
+                                result => {
+                                    console.log(result[chapter]);
+                                    var chapterNumber = result.length;
+                                    var chapterList = "";
+
+                                    for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
+                                        chapterList += "<li> <a href=chapter=" + chaptercount + "> Chương " + chaptercount + "</a> </li>";
                                     }
-                                );
-                            }
-                        );
-                    } else {
-                        module.getChapterDetails(chapter).then(
-                            result => {
-                                console.log(result);
-                                let content = result.content;
 
-                                res.render('chapterPage', {
-                                    previousPage: `document.location='chapter=${result.chapter_prev}'`,
-                                    nextPage: `document.location='chapter=${result.chapter_next}'`,
-                                    title: title, chapter: result.position, content: content});
+                                    module.crawlChapter(result[chapter]).then(
+                                        chap => {
+                                            res.render('chapterPage', {
+                                                chapterList: chapterList,
+                                                previousPage: `document.location='chapter=${chapter}'`,
+                                                nextPage: `document.location='chapter=${chapter + 2}'`,
+                                                title: title, chapter: chapter + 1, content: chap});
+                                        }
+                                    );
                                 }
-                        );
+                            );
+                        } else {
+                            module.getChapterDetails(chapter).then(
+                                result => {
+                                    console.log(result);
+                                    console.log("Số lượng " + item.chapters)
+                                    var chapterNumber = item.chapters;
+                                    var chapterList = "";
+
+                                    for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
+                                        chapterList += "<option> Chương " + chaptercount + "</option>";
+                                    }
+
+                                    console.log(chapterList);
+
+                                    let content = result.content;
+
+                                    res.render('chapterPage', {
+                                        chapterList: chapterList,
+                                        previousPage: `document.location='chapter=${result.chapter_prev}'`,
+                                        nextPage: `document.location='chapter=${result.chapter_next}'`,
+                                        title: title, chapter: result.position, content: content});
+                                    }
+                            );
+                        }
+                        
                     }
-                    
-                }
+                });
         });
 
         console.log('Rendering novel page!');

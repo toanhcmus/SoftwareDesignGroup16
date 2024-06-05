@@ -1,14 +1,18 @@
 body {
     background-color: #C8C5BC;
     align-items: center;
+    font-family: 'JetBrains Mono';
+    align-self: center;
 }
 
 .flex-container-vertical {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    margin: 10% auto;
-    font-family: 'JetBrains Mono';
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    align-items: center;
 }
 
 .flex-container-horizontal {
@@ -18,7 +22,7 @@ body {
     justify-items: center;
     flex-wrap: wrap;
     font-family: 'JetBrains Mono';
-    height: max-content;
+    margin: 0;
 }
 
 .cover-section {
@@ -27,12 +31,21 @@ body {
     margin-top: 0;
     margin-left: auto;
     margin-right: auto;
+    justify-content: center;
 }
 
 .main-container {
     width: 60%;
     height: 100%;
     background-color: #EDEBDF;
+    margin-top: 10%
+}
+
+.top-container {
+    box-sizing: border-box;
+    overflow-wrap: normal;
+    flex-wrap: wrap;
+    max-height: fit-content;
 }
 
 .name-author-section {
@@ -49,23 +62,28 @@ body {
 
 .name-author-section h1 {
     margin-top: 5%;
-    font-size: 8vw;
+    font-size: 2vw;
+    max-width: 100%;
+    max-height: 100%;
 }
 
-.next-chapter-button {
+.read-novel-btn {
     background-color: #1E1E1E;
     border: none;
     color: white;
     font-family: 'JetBrains Mono';
     padding: 10px;
     display: flex;
-    width: 100px;
+    width: 70%;
     text-align: center;
+
+    margin-top: 10%;
+
     transition: all 0.5s;
     cursor: pointer;
 }
 
-.next-chapter-button span {
+.read-novel-btn span {
     margin: auto;
     cursor: pointer;
     display: inline-block;
@@ -73,7 +91,7 @@ body {
     transition: 0.5s;
 }
 
-.next-chapter-button span:after {
+.read-novel-btn span:after {
     content: '\00bb';
     position: absolute;
     opacity: 0;
@@ -82,11 +100,11 @@ body {
     transition: 0.5s;
 }
 
-.next-chapter-button:hover span {
+.read-novel-btn:hover span {
     padding-right: 25px;
 }
 
-.next-chapter-button:hover span:after {
+.read-novel-btn:hover span:after {
     opacity: 1;
     right: 0;
 }
@@ -96,8 +114,8 @@ body {
 }
 
 #select-option-3 {
-    width: fit-content;
-    height: fit-content;
+    width: 70%;
+    height: 10%;
     font-family: 'JetBrains Mono';
     text-align: center;
 }
@@ -108,11 +126,6 @@ body {
 
 .drop-shadow {
     box-shadow: -10px 10px 4px slategray;
-}
-
-.drop-shadow-5px {
-    box-shadow: -5px 5px 4px slategray;
-    display: block;
 }
 
 .description-section {
@@ -135,7 +148,10 @@ body {
     font-family: 'JetBrains Mono';
     margin: 0 auto;
     width: 100%;
-    background-color: aqua;
+    justify-content: space-between;
+    justify-self: center;
+    align-items: center;
+    align-content: center;
 }
 
 .hr-one {
@@ -149,26 +165,42 @@ body {
 }
 
 .cover-section img {
+    width: 260px;
+    height: 390px;
+}
+
+.chapter-list {
+    display: flex;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono';
+    text-wrap: pretty;
+}
+
+.pagination-section {
+    display: inline-block;
+    justify-self: center;
+    align-self: center;
+}
+  
+.pagination-section a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+  
+.pagination-section a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+  
+.pagination-section a:hover:not(.active) {background-color: #ddd;}
+
+.chapters {
+    justify-content: space-around;
     width: 100%;
-    height: 100%;
-}
-
-.header {
-    width: 60%;
-    height: 100%;
-    margin: 5% auto;
-    justify-content: center;
-    align-content: center;
-    text-align: center;
-}
-
-.header h1, h3, h4 {
-    margin-top: 5px;
-}
-
-.chapter {
-    padding: 20px;
-    margin-top: 0%;
+    justify-self: center;
 }
 
 .previous-chapter-button {
@@ -178,10 +210,12 @@ body {
     font-family: 'JetBrains Mono';
     padding: 10px;
     display: flex;
-    width: 100px;
+    width: fit-content;
     text-align: center;
     transition: all 0.5s;
     cursor: pointer;
+    margin-top: 30px;
+    margin-bottom: 10px;
 }
 
 .previous-chapter-button span {
@@ -210,134 +244,12 @@ body {
     left: 0;
 }
 
-.top-container {
-    align-content: center;
-    align-items: center;
-    width: 80%;
-    justify-content: center;
-    margin: auto;
+.not-found {
+    margin: 0;
+    font-size: 100px;
+    font-weight: lighter;
 }
 
-
-.toolbar {
-    align-content: space-evenly;
-    align-items: center;
-    justify-items: center;
-
-    margin-bottom: 5%;
-
-    width: 80%;
-}
-
-.toolbar select {
-    width: 100px;
-    height: 50px;
-}
-
-.back-button {
-    font-size: 12px;
-    width: fit-content;
-    background-color: cadetblue;
-}
-
-.toolbar-button {
-    font-size: 12px;
-    width: fit-content;
-    background-color: cadetblue;
-    border: none;
-    color: white;
-    font-family: 'JetBrains Mono';
-    padding: 10px;
-    display: flex;
-    text-align: center;
-    transition: all 0.5s;
-    cursor: pointer;
-}
-
-.toolbar-button span {
-    margin: auto;
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-    transition: 0.5s;
-}
-
-.toolbar-button:after {
-    position: absolute;
-    opacity: 0;
-    top: 0;
-    transition: 0.5s;
-    background-color: #505f88;
-}
-
-.toolbar-button:hover{
-    background-color: #505f88;
-}
-
-#text-color {
-    width: 25px;
-    height: 25px;
-}
-
-#background-color {
-    width: 25px;
-    height: 25px;
-}
-
-#line-spacing {
-    width: 50px;
-    height: 25px;
-}
-
-#font-name {
-    width: 50px;
-    height: 25px;
-}
-
-#font-size {
-    width: 50px;
-    height: 25px;
-}
-
-.hidden {
-    display: none;
-    transform: scaleY(0);
-}
-
-.toolbar {
-    transition: all 2s ease-in-out;
-    transform-origin: left top;
-    transform: scaleY(1);
-
-    width: 100%;
-}
-
-#font-name {
-    width: fit-content;
-    font-family: 'JetBrains Mono';
-}
-
-#chapter-selector {
-    width: fit-content;
-    font-family: 'JetBrains Mono';
-}
-
-
-#back-to-top-btn {
-    background-color: #1E1E1E;
-    border: none;
-    color: white;
-    font-family: 'JetBrains Mono';
-    position: fixed;
-    font-size: 30px;
-    width: 40px;
-    height: 40px;
-    margin: 10px;
-    margin-left: 15px;
-    border-radius: 50%;
-    display: none;
-}
-
-#back-to-top-btn:hover{
-    background-color: #505f88;
+h3, h5 {
+    margin: 0;
 }

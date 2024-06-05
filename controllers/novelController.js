@@ -45,14 +45,17 @@ class NovelPageController {
         //         results.forEach(item => {
         //             console.log(item + " Searched");
 
-        //             const itemName = item.title;
-        //             console.log(`itemName: ${itemName}`);
+
+                    const itemName = stringUtil.reformatForUrlHandling(item.title);
+                    console.log(`itemName: ${itemName}`);
+                    console.log(novel);
 
         //             if (novel.localeCompare(itemName) == 0) {
                     
         //                 const cover = item.cover;
         //                 const title = item.title;
         //                 console.log(item);
+
         
         //                 let chapColList1 = "";
         //                 let chapColList2 = "";
@@ -256,6 +259,7 @@ class NovelPageController {
             });
 
         console.log('Rendering novel page!');
+
     }
 
     renderNovelPage(req, res) {
@@ -269,6 +273,7 @@ class NovelPageController {
         res.cookie('page',page)
         res.cookie('src','')
         res.cookie('chapter',0);
+        res.cookie('setting', {})
         console.log(" YESSSSSSSSSSSSSSS",req.cookies.novel);
 
         thichtruyen.crawlAllNovels("xin chào").then(
@@ -290,8 +295,7 @@ class NovelPageController {
                         let pagignationSection = "";
         
                         thichtruyen.fetchChapterList(item.detailLink).then(
-                            results => {
-                                let count = 1;
+                            results => { let count = 1;
                                 let chapterNumber = results.length;
                                 let totalItem = firstColumnItemSize + secondColumnItemSize;
                                 let totalPage = (chapterNumber + totalItem - 1) / totalItem;
@@ -311,6 +315,10 @@ class NovelPageController {
                                 }
 
                                 for (let pageCount = 1; pageCount <= totalPage; pageCount++) {
+                                    if (pageCount == page + 1) {
+                                        continue;
+                                    }
+
                                     pagignationSection += "<a href=page=" + pageCount + ">" + pageCount + "</a>";
                                 }
 
@@ -333,7 +341,7 @@ class NovelPageController {
 
         console.log('Rendering novel page!');
     }
-    saveStates (req,res,next){
+    saveStates (req,res, next){
         console.log('SAVESTATES',req.cookies);
 
         if (req.cookies.novel) {
