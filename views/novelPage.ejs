@@ -24,10 +24,16 @@
 
                     <label for="select-option-3">Nguồn</label>
 
+                    <!-- <select id="select-option-3" class="choose-link">
+                        <% for (let i = 0; i < srcList.length; i++) { %>
+                            <option value="<%= srcList[i]%>"><%= srcList[i]%></option>
+                        <% } %>
+                    </select> -->
+
                     <select id="select-option-3" class="choose-link">
-                        <option value="truyenfull.vn">truyenfull.vn</option>
-                        <option value="tangthuvien.com">tangthuvien.com</option>
-                        <option value="metruyen.vn">metruyen.vn</option>
+                        <% for (let i = 0; i < srcList.length; i++) { %>
+                            <option value="<%= srcList[i]%>" ><%= srcList[i]%></option>
+                        <% } %>
                     </select>
 
                     <Button class="read-novel-btn" id="read-novel-btn" onclick="document.location='chapter=1'">

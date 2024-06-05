@@ -3,6 +3,7 @@ const thichtruyen = require('../modules/thichtruyen.js');
 const tangthuvien = require('../modules/tangthuvien.js');
 const truyenfull = require('../modules/truyenfull.js');
 const stringUtil = require('../utilities/stringUtil.js');
+const { getModules, countModules, loadModules, printModuleNames, getModuleNames, reloadModules, getModuleByName } = require('../utilities/moduleLoader.js');
 
 class ChapterPageController {
     renderChapterPage(req, res) {
@@ -20,8 +21,9 @@ class ChapterPageController {
         
 
         console.log(req.params.name + " Chapter " + chapter);
-        res.cookie('chapter',chapter+1)
+        res.cookie('chapter',chapter)
         res.cookie('novel',novel);
+        res.cookie('src',src)
         console.log(" YESSSSSSSSSSSSSSS",req.cookies.novel);
 
         let module = tangthuvien;
@@ -40,47 +42,52 @@ class ChapterPageController {
 
         module.crawlAllNovels(novel).then(
             results => {
-                results.forEach(item => {
-                    console.log(item + " Searched");
+                let item = results.find(item => item.title === novel);
 
-                    const itemName = item.title;
+                // Không tìm thấy truyện ở server muốn chuyển đến
+                if (item == null) {
+                    return res.redirect('/');
+                }
+                
+                console.log(item + " Searched");
 
-                    if (novel.localeCompare(itemName) == 0) {
+                const itemName = item.title;
+
+                if (novel.localeCompare(itemName) == 0) {
+                
+                    const cover = item.cover;
+                    const title = item.title;
+                    // console.log(item);    
                     
-                        const cover = item.cover;
-                        const title = item.title;
-                        // console.log(item);    
-                        
-                        if (module == thichtruyen || module == tangthuvien) {
-                            module.fetchChapterList(item.detailLink).then(
-                                result => {
-                                    console.log(result[chapter]);
-                                    module.crawlChapter(result[chapter]).then(
-                                        chap => {
-                                            res.render('chapterPage', {
-                                                previousPage: `document.location='chapter=${chapter}'`,
-                                                nextPage: `document.location='chapter=${chapter + 2}'`,
-                                                title: title, chapter: chapter + 1, content: chap});
-                                        }
-                                    );
-                                }
-                            );
-                        } else {
-                            module.getChapterDetails(chapter).then(
-                                result => {
-                                    console.log(result);
-                                    let content = result.content;
-
-                                    res.render('chapterPage', {
-                                        previousPage: `document.location='chapter=${result.chapter_prev}'`,
-                                        nextPage: `document.location='chapter=${result.chapter_next}'`,
-                                        title: title, chapter: result.position, content: content});
+                    if (module == thichtruyen || module == tangthuvien) {
+                        module.fetchChapterList(item.detailLink).then(
+                            result => {
+                                console.log(result[chapter]);
+                                module.crawlChapter(result[chapter]).then(
+                                    chap => {
+                                        res.render('chapterPage', {
+                                            previousPage: `document.location='chapter=${chapter}'`,
+                                            nextPage: `document.location='chapter=${chapter + 2}'`,
+                                            title: title, chapter: chapter + 1, content: chap});
                                     }
-                            );
-                        }
-                        
+                                );
+                            }
+                        );
+                    } else {
+                        module.getChapterDetails(chapter).then(
+                            result => {
+                                console.log(result);
+                                let content = result.content;
+
+                                res.render('chapterPage', {
+                                    previousPage: `document.location='chapter=${result.chapter_prev}'`,
+                                    nextPage: `document.location='chapter=${result.chapter_next}'`,
+                                    title: title, chapter: result.position, content: content});
+                                }
+                        );
                     }
-                });
+                    
+                }
         });
 
         console.log('Rendering novel page!');
