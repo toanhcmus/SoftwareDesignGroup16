@@ -86,6 +86,7 @@ function delay(time) {
 
 async function fetchChapterList(novelUrl) {
     try {
+        // let currentpage = 1;
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.goto(novelUrl);
@@ -100,11 +101,15 @@ async function fetchChapterList(novelUrl) {
         let previousChapterListHTML = '';
 
         while (true) {
+            await delay(500);
             const currentChapterListHTML = await page.evaluate(() => document.querySelector('#max-volume ul.cf').innerHTML);
 
             if (currentChapterListHTML === previousChapterListHTML) {
-                break;
+                continue;
             }
+
+            // console.log('page = ', currentpage);
+            // currentpage++;
 
             const $ = cheerio.load(currentChapterListHTML);
             const currentChapters = $('li').toArray();
@@ -113,27 +118,27 @@ async function fetchChapterList(novelUrl) {
                 chapters.push(chapterLink);
             });
 
+            console.log(chapters.length);
+
+            previousChapterListHTML = currentChapterListHTML;
+
             try {
-                const nextPageButton = await page.$('.pagination li:last-child a[aria-label="Next"]');
+                const nextPageButton = await page.$('.pagination a[aria-label="Next"], .pagination a[title="Trang sau"]');
                 if (nextPageButton) {
                     await nextPageButton.click();
-                    await delay(1000);
                     await page.waitForSelector('#max-volume ul.cf li');
                 } else {
-                    break;
+                    await browser.close();
+                    chapters.shift();
+                    return chapters;
                 }
             } catch (error) {
                 console.error('Error clicking on next page button:', error);
+                await browser.close();
                 chapters.shift();
                 return chapters;
             }
-
-            previousChapterListHTML = currentChapterListHTML;
         }
-
-        await browser.close();
-        chapters.shift();
-        return chapters;
     } catch (error) {
         console.error('Error fetching chapter list:', error);
         return [];

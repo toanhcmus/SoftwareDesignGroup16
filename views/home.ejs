@@ -61,9 +61,9 @@
                                         <select id="select-option-1" class="choose-link"
                                             onchange="updateSelectOptions('select-option-1')">
                                             <option value="" selected hidden>Chọn truyện</option>
-                                            <option value="truyenfull.vn">truyenfull.vn</option>
-                                            <option value="tangthuvien.com">tangthuvien.com</option>
-                                            <option value="metruyen.vn">metruyen.vn</option>>
+                                            <% for (let i = 0; i < srcList.length; i++) { %>
+                                                <option value="<%= srcList[i]%>"><%= srcList[i]%></option>
+                                            <% } %>
                                         </select>
                                     </div>
                                 </td>
@@ -75,9 +75,9 @@
                                         <select id="select-option-2" class="choose-link"
                                             onchange="updateSelectOptions('select-option-2')">
                                             <option value="" selected hidden>Chọn truyện</option>
-                                            <option value="truyenfull.vn">truyenfull.vn</option>
-                                            <option value="tangthuvien.com">tangthuvien.com</option>
-                                            <option value="metruyen.vn">metruyen.vn</option>
+                                            <% for (let i = 0; i < srcList.length; i++) { %>
+                                                <option value="<%= srcList[i]%>"><%= srcList[i]%></option>
+                                            <% } %>
                                         </select>
                                     </div>
                                 </td>
@@ -89,9 +89,9 @@
                                         <select id="select-option-3" class="choose-link"
                                             onchange="updateSelectOptions('select-option-3')">
                                             <option value="" selected hidden>Chọn truyện</option>
-                                            <option value="truyenfull.vn">truyenfull.vn</option>
-                                            <option value="tangthuvien.com">tangthuvien.com</option>
-                                            <option value="metruyen.vn">metruyen.vn</option>
+                                            <% for (let i = 0; i < srcList.length; i++) { %>
+                                                <option value="<%= srcList[i]%>"><%= srcList[i]%></option>
+                                            <% } %>
                                         </select>
                                     </div>
                                 </td>
@@ -151,10 +151,10 @@
                     integrity="sha384-ENjdO4Dr2bkBIFxQpIdKSsYG1g3PHPWlDxLgmNkwlghG56Yd7whQYGHIgKmZoZnl"
                     crossorigin="anonymous"></script>
                 <script>
-                    var mLink = ["truyenfull.vn", "metruyen.vn", "tangthuvien.com"];
+                    var mLink = <%- JSON.stringify(srcList) %>;
                     document.querySelector("#reset-chose-link").onclick = function () {
-                        console.log("abc")
-                        mLink = ["truyenfull.vn", "metruyen.vn", "tangthuvien.com"];
+                        console.log("abc");
+                        mLink = <%- JSON.stringify(srcList) %>;
                         var selects = document.querySelectorAll(".choose-link");
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
