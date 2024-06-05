@@ -46,12 +46,12 @@ class ChapterPageController {
 
                 // Không tìm thấy truyện ở server muốn chuyển đến
                 if (item == null) {
-                    return res.redirect('/');
+                    return res.render('notFound');
                 }
                 
                 console.log(item + " Searched");
 
-                    const itemName = stringUtil.reformatForUrlHandling(item.title);
+                    const itemName = item.title;
 
                     if (novel.localeCompare(itemName) == 0) {
                     
@@ -102,16 +102,14 @@ class ChapterPageController {
                                         previousPage: `document.location='chapter=${result.chapter_prev}'`,
                                         nextPage: `document.location='chapter=${result.chapter_next}'`,
                                         title: title, chapter: result.position, content: content});
-                                    }
-                            );
+                                    });
                         }
                         
                     }
                 });
-        });
 
         console.log('Rendering novel page!');
-    }
+    };
 };
 
 module.exports = new ChapterPageController

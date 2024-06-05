@@ -124,7 +124,7 @@
                                             <%= novels[i].origin %>
                                         </p>
                                         <p class="card-text"> <a
-                                                href="/novel/name=<%= encodeURIComponent(novels[i].title) %>/src=<%= novels[i].origin %>/page=1">Chi
+                                                href="/name=<%= encodeURIComponent(novels[i].title) %>/src=<%= novels[i].origin %>/page=1">Chi
                                                 tiết</a></p>
                                     </div>
                                 </div>
@@ -216,7 +216,7 @@
                     async function saveStates() {
                         console.log('aaaaaaaaaa')
                         try {
-                            const response = await fetch('/novel/saveStates', {
+                            const response = await fetch('/saveStates', {
                                 method: 'GET'
                             });
                             if (!response.ok) {

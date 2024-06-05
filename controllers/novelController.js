@@ -45,11 +45,6 @@ class NovelPageController {
         //         results.forEach(item => {
         //             console.log(item + " Searched");
 
-
-                    const itemName = stringUtil.reformatForUrlHandling(item.title);
-                    console.log(`itemName: ${itemName}`);
-                    console.log(novel);
-
         //             if (novel.localeCompare(itemName) == 0) {
                     
         //                 const cover = item.cover;
@@ -154,7 +149,7 @@ class NovelPageController {
 
                 // Không tìm thấy truyện ở server muốn chuyển đến
                 if (item == null) {
-                    return res.redirect('/');
+                    return res.render('notFound');   
                 }
 
                 console.log(item + " Searched");
@@ -346,9 +341,9 @@ class NovelPageController {
 
         if (req.cookies.novel) {
             if (req.cookies.chapter==0)
-                res.json({ redirect: `/novel/name=${req.cookies.novel}/src=${req.cookies.src}/page=1` });
+                res.json({ redirect: `/name=${req.cookies.novel}/src=${req.cookies.src}/page=1` });
             else 
-                res.json({ redirect: `/novel/name=${req.cookies.novel}/src=${req.cookies.src}/chapter=${req.cookies.chapter}` });
+                res.json({ redirect: `/name=${req.cookies.novel}/src=${req.cookies.src}/chapter=${req.cookies.chapter}` });
 
         } else {
             res.json({ message: 'renderItems not found in cookies' });
