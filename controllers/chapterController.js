@@ -7,24 +7,10 @@ const { getModules, countModules, loadModules, printModuleNames, getModuleNames,
 const path = require('path');
 const fs = require('fs')
 
-const { countModuleExports, loadModuleExports } = require('../utilities/exportLoader.js');
-const modulesDir = path.join(__dirname, '..', 'exportModuels');
-let moduleExports = {};
-
-let debounceTimeout;
-const DEBOUNCE_DELAY = 500;
-
-fs.watch(modulesDir, (eventType, filename) => {
-    if (filename && filename.endsWith('.js')) {
-        console.log(`Detected changes in ${filename}, scheduling reload...`);
-        clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(async () => {
-            await loadModuleExports(modulesDir, moduleExports);
-        }, DEBOUNCE_DELAY);
-    }
-});
-
-
+const { countModuleExports, loadModuleExports,getModuleExportsNames,getModuleExportByName } = require('../utilities/exportLoader.js');
+(async () => {
+    await loadModuleExports();
+})();
 
 class ChapterPageController {
     renderChapterPage(req, res) {
@@ -138,11 +124,14 @@ class ChapterPageController {
 
     async sendFileExportToClient(req, res) {
         console.log('Reloading modules Exports...');
-        moduleExports = {};
-        await loadModuleExports(modulesDir, moduleExports);
-        console.log(`Number of modules Exports: ${countModuleExports(moduleExports)}`);
+        console.log(`Number of modules Exports: ${countModuleExports()}`);
+        const names= await getModuleExportsNames();
+        names.forEach((name)=>{
+            console.log(`Modules exports là: ${name}`);
+        })
         const dataReceive = req.body;
-        await moduleExports[dataReceive.typeFile].exportChapterNovel(res, dataReceive);
+        const module=await getModuleExportByName(dataReceive.typeFile);
+        module.exportChapterNovel(res, dataReceive);
     }
 };
 

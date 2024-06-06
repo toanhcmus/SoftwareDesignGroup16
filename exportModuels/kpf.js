@@ -62,5 +62,8 @@ module.exports = {
       });
 
     });
+  },
+  getNameFileExport: async function getNameFileExport() {
+    return 'kpf';
   }
 }

@@ -53,5 +53,8 @@ module.exports = {
       res.status(500).send('Error generating EPUB');
     }
 
+  },
+  getNameFileExport: async function getNameFileExport() {
+    return 'epub';
   }
 }

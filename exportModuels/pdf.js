@@ -20,5 +20,8 @@ module.exports = {
     doc.text(dataNovel.title+ "\n"+ dataNovel.titleChapter + "\n" + dataNovel.content);
 
     doc.end();
+  },
+  getNameFileExport: async function getNameFileExport() {
+    return 'pdf';
   }
 }
