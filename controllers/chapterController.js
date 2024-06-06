@@ -4,6 +4,27 @@ const tangthuvien = require('../modules/tangthuvien.js');
 const truyenfull = require('../modules/truyenfull.js');
 const stringUtil = require('../utilities/stringUtil.js');
 const { getModules, countModules, loadModules, printModuleNames, getModuleNames, reloadModules, getModuleByName } = require('../utilities/moduleLoader.js');
+const path = require('path');
+const fs = require('fs')
+
+const { countModuleExports, loadModuleExports } = require('../utilities/exportLoader.js');
+const modulesDir = path.join(__dirname, '..', 'exportModuels');
+let moduleExports = {};
+
+let debounceTimeout;
+const DEBOUNCE_DELAY = 500;
+
+fs.watch(modulesDir, (eventType, filename) => {
+    if (filename && filename.endsWith('.js')) {
+        console.log(`Detected changes in ${filename}, scheduling reload...`);
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(async () => {
+            await loadModuleExports(modulesDir, moduleExports);
+        }, DEBOUNCE_DELAY);
+    }
+});
+
+
 
 class ChapterPageController {
     renderChapterPage(req, res) {
@@ -13,18 +34,18 @@ class ChapterPageController {
 
         let chapter = 0;
 
-        if (src === "truyenfull" ) {
+        if (src === "truyenfull") {
             chapter = (~~req.params.chap);
         } else {
             chapter = (~~req.params.chap) - 1;
         }
-        
+
 
         console.log(req.params.name + " Chapter " + chapter);
-        res.cookie('chapter',chapter)
-        res.cookie('novel',novel);
-        res.cookie('src',src)
-        console.log(" YESSSSSSSSSSSSSSS",req.cookies.novel);
+        res.cookie('chapter', chapter)
+        res.cookie('novel', novel);
+        res.cookie('src', src)
+        console.log(" YESSSSSSSSSSSSSSS", req.cookies.novel);
 
         let module = tangthuvien;
 
@@ -48,68 +69,81 @@ class ChapterPageController {
                 if (item == null) {
                     return res.render('notFound');
                 }
-                
+
                 console.log(item + " Searched");
 
-                    const itemName = item.title;
+                const itemName = item.title;
 
-                    if (novel.localeCompare(itemName) == 0) {
-                    
-                        const cover = item.cover;
-                        const title = item.title;
-                        // console.log(item);    
-                        
-                        if (module == thichtruyen || module == tangthuvien) {
-                            module.fetchChapterList(item.detailLink).then(
-                                result => {
-                                    console.log(result[chapter]);
-                                    var chapterNumber = result.length;
-                                    var chapterList = "";
+                if (novel.localeCompare(itemName) == 0) {
 
-                                    for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
-                                        chapterList += "<li> <a href=chapter=" + chaptercount + "> Chương " + chaptercount + "</a> </li>";
-                                    }
+                    const cover = item.cover;
+                    const title = item.title;
+                    // console.log(item);    
 
-                                    module.crawlChapter(result[chapter]).then(
-                                        chap => {
-                                            res.render('chapterPage', {
-                                                chapterList: chapterList,
-                                                previousPage: `document.location='chapter=${chapter}'`,
-                                                nextPage: `document.location='chapter=${chapter + 2}'`,
-                                                title: title, chapter: chapter + 1, content: chap});
-                                        }
-                                    );
+                    if (module == thichtruyen || module == tangthuvien) {
+                        module.fetchChapterList(item.detailLink).then(
+                            result => {
+                                console.log(result[chapter]);
+                                var chapterNumber = result.length;
+                                var chapterList = "";
+
+                                for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
+                                    chapterList += "<li> <a href=chapter=" + chaptercount + "> Chương " + chaptercount + "</a> </li>";
                                 }
-                            );
-                        } else {
-                            module.getChapterDetails(chapter).then(
-                                result => {
-                                    console.log(result);
-                                    console.log("Số lượng " + item.chapters)
-                                    var chapterNumber = item.chapters;
-                                    var chapterList = "";
 
-                                    for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
-                                        chapterList += "<option> Chương " + chaptercount + "</option>";
+                                module.crawlChapter(result[chapter]).then(
+                                    chap => {
+                                        res.render('chapterPage', {
+                                            chapterList: chapterList,
+                                            previousPage: `document.location='chapter=${chapter}'`,
+                                            nextPage: `document.location='chapter=${chapter + 2}'`,
+                                            title: title, chapter: chapter + 1, content: chap
+                                        });
                                     }
+                                );
+                            }
+                        );
+                    } else {
+                        module.getChapterDetails(chapter).then(
+                            result => {
+                                console.log(result);
+                                console.log("Số lượng " + item.chapters)
+                                var chapterNumber = item.chapters;
+                                var chapterList = "";
 
-                                    console.log(chapterList);
+                                for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
+                                    chapterList += "<option> Chương " + chaptercount + "</option>";
+                                }
 
-                                    let content = result.content;
+                                console.log(chapterList);
 
-                                    res.render('chapterPage', {
-                                        chapterList: chapterList,
-                                        previousPage: `document.location='chapter=${result.chapter_prev}'`,
-                                        nextPage: `document.location='chapter=${result.chapter_next}'`,
-                                        title: title, chapter: result.position, content: content});
-                                    });
-                        }
-                        
+                                let content = result.content;
+
+                                res.render('chapterPage', {
+                                    chapterList: chapterList,
+                                    previousPage: `document.location='chapter=${result.chapter_prev}'`,
+                                    nextPage: `document.location='chapter=${result.chapter_next}'`,
+                                    title: title, chapter: result.position, content: content
+                                });
+                            });
                     }
-                });
+
+                }
+            });
 
         console.log('Rendering novel page!');
-    };
+    }
+
+    //console.log('Rendering novel page!');
+
+    async sendFileExportToClient(req, res) {
+        console.log('Reloading modules Exports...');
+        moduleExports = {};
+        await loadModuleExports(modulesDir, moduleExports);
+        console.log(`Number of modules Exports: ${countModuleExports(moduleExports)}`);
+        const dataReceive = req.body;
+        await moduleExports[dataReceive.typeFile].exportChapterNovel(res, dataReceive);
+    }
 };
 
 module.exports = new ChapterPageController
