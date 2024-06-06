@@ -356,7 +356,8 @@
         }
     }
 
-    document.querySelectorAll('.dropdown-item').forEach(typeExportFile => {
+    function downloadFileExport(){
+        document.querySelectorAll('.dropdown-item').forEach(typeExportFile => {
         typeExportFile.addEventListener('click', async function (event) {
             const typeFileText = event.target.innerText;
             const title = document.getElementById('title-novel').innerHTML.trim();
@@ -398,8 +399,10 @@
             }
         });
     });
+    }
+   
 
-
+    downloadFileExport();
     initializeFontSelector(fonts);
     initializeChapterSelector();
     checkCookie();
