@@ -13,7 +13,8 @@ const { countModuleExports, loadModuleExports,getModuleExportsNames,getModuleExp
 })();
 
 class ChapterPageController {
-    renderChapterPage(req, res) {
+    async renderChapterPage(req, res) {
+        const listFileExports= await getModuleExportsNames();
         const novel = req.params.name;
         console.log(novel);
         const src = req.params.src;
@@ -83,7 +84,8 @@ class ChapterPageController {
                                             chapterList: chapterList,
                                             previousPage: `document.location='chapter=${chapter}'`,
                                             nextPage: `document.location='chapter=${chapter + 2}'`,
-                                            title: title, chapter: chapter + 1, content: chap
+                                            title: title, chapter: chapter + 1, content: chap,
+                                            fileExports: listFileExports
                                         });
                                     }
                                 );
@@ -109,7 +111,8 @@ class ChapterPageController {
                                     chapterList: chapterList,
                                     previousPage: `document.location='chapter=${result.chapter_prev}'`,
                                     nextPage: `document.location='chapter=${result.chapter_next}'`,
-                                    title: title, chapter: result.position, content: content
+                                    title: title, chapter: result.position, content: content,
+                                    fileExports: listFileExports
                                 });
                             });
                     }

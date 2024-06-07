@@ -34,7 +34,6 @@
             background-color: rgb(169, 242, 163);
         }
         #reset-chose-link:hover{
-            border-radius: 8px;
             background-color: rgb(30, 243, 76);
         }
         .choose-link{
@@ -47,11 +46,17 @@
         .choose-link:hover{
             background-color: rgb(167, 255, 255);
         }
+        .choose-link[disabled] {
+            background-color: rgb(208, 239, 239);
+        }
+
+        .choose-link[disabled]:hover {
+            background-color: rgb(208, 239, 239);
+        }
     </style>
 </head>
 
 <body>
-    <button onclick="doIt()"> DO IT</button>
     <div class="container my-4">
         <h1 class="text-center mb-4">HappyGroup</h1>
 
@@ -259,12 +264,12 @@
                     }
                    
                     //hàm này là khi fetch liên tục và cập nhật về thì sẽ làm hàm này.
-                    function doIt(){
-                        console.log("Vao doIt");
-                        mLinksGlobal=["a","b","cde","fgh"];
-                        mOptionLinks=mLinksGlobal;
-                        insertChosenLinksPriority();
-                    }
+                    // function doIt(){
+                    //     console.log("Vao doIt");
+                    //     mLinksGlobal=["a","b","cde","fgh"];
+                    //     mOptionLinks=mLinksGlobal;
+                    //     insertChosenLinksPriority();
+                    // }
 
 
                     insertChosenLinksPriority();

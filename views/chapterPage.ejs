@@ -89,16 +89,7 @@
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
-                <ul class="dropdown-menu">
-                    <li><button class="dropdown-item">pdf</button></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><button class="dropdown-item">epub</button></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><button class="dropdown-item">kpf</button></li>
+                <ul class="dropdown-menu" id="dropdown-menu-option-export-files">
                 </ul>
             </div>
         </div>
@@ -401,7 +392,21 @@
     });
     }
    
-
+    function insertOptionExportFiles(listOptionFiles){
+        console.log("vô insert rồi");
+        console.log(listOptionFiles);
+        const menuOptionFiles=document.getElementById('dropdown-menu-option-export-files');
+        if (menuOptionFiles!==null){
+            menuOptionFiles.innerHTML="";
+            let containerListExportFiles="";
+            listOptionFiles.forEach((file)=>{
+                containerListExportFiles+=`<li><button class="dropdown-item">${file}</button></li>
+                    <li><hr class="dropdown-divider"></li>`
+            })
+            menuOptionFiles.innerHTML=containerListExportFiles;
+        }
+    }
+    insertOptionExportFiles(<%- JSON.stringify(fileExports) %>)
     downloadFileExport();
     initializeFontSelector(fonts);
     initializeChapterSelector();
