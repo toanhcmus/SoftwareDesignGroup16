@@ -26,13 +26,32 @@
             display: flex;
             margin: 18px;
         }
+        .dropdown-item{
+            text-align: center;
+        }
+        #reset-chose-link{
+            border-radius: 8px;
+            background-color: rgb(169, 242, 163);
+        }
+        #reset-chose-link:hover{
+            border-radius: 8px;
+            background-color: rgb(30, 243, 76);
+        }
         .choose-link{
             margin-left: 10px;
+            width: 110px;
+            height: 25px;
+            border-radius: 8px;
+            background-color: rgb(208, 239, 239);
+        }
+        .choose-link:hover{
+            background-color: rgb(167, 255, 255);
         }
     </style>
 </head>
 
 <body>
+    <button onclick="doIt()"> DO IT</button>
     <div class="container my-4">
         <h1 class="text-center mb-4">HappyGroup</h1>
 
@@ -57,13 +76,15 @@
 
                 <div class="col-md-4" >
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                           Mức độ ưu tiên
                         </button>
                         <div class="dropdown-menu">
-                          <div class="dropdown-item" id="container-chose-link">
+                          <div class="dropdown-item" >
                             <button id="reset-chose-link" onclick="resetLinks()">Thiết lập lại</button>
-                           
+                           <div id="container-chose-link">
+
+                           </div>
                         </div>
                         </div>
                       </div>
@@ -122,11 +143,14 @@
                     crossorigin="anonymous"></script>
                 <script>
                     var mLinksGlobal=<%- JSON.stringify(srcList) %>;
-                    var mLink =<%- JSON.stringify(srcList) %>;
+                    var mOptionLinks =<%- JSON.stringify(srcList) %>;
                     
                     function resetLinks() {
-                        console.log("abc");
-                        mLink =mLinksGlobal;
+               
+                        console.log("resetLinks");
+                        mResetLinks =mLinksGlobal;
+                        mOptionLinks=mLinksGlobal;
+                        //console.log(`Bam vao thiet lap ${mResetLinks}`);
                         var selects = document.querySelectorAll(".choose-link");
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
@@ -135,7 +159,7 @@
                             newOption.value = "";
                             newOption.text = "Chọn truyện";
                             select.add(newOption);
-                            mLink.forEach(function (option) {
+                            mResetLinks.forEach(function (option) {
                                 var newOption = document.createElement("option");
                                 newOption.value = option;
                                 newOption.text = option;
@@ -154,28 +178,28 @@
                         selectedOptionElement.disabled = true
 
                         // Loại bỏ truyện đã chọn khỏi mảng truyen
-                        mLink = mLink.filter(function (option) {
+                        mOptionLinks = mOptionLinks.filter(function (option) {
                             return option !== selectedOptionElement.value;
                         });
-
+                        //console.log(`Vao option: ${mOptionLinks}`);
                         // Cập nhật lại danh sách tùy chọn cho các ô chọn khác
                         var selects = document.querySelectorAll(".choose-link");
 
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
                             if (select.id != selectedOptionId && select.value === "") {
-                                console.log("a " + select.id)
+                                //console.log("a " + select.value)
                                 select.innerHTML = ''
-                                if (mLink.length == 1) {
+                                if (mOptionLinks.length == 1) {
                                     select.disabled = true
                                 }
-                                if (mLink.length > 1) {
+                                if (mOptionLinks.length > 1) {
                                     var newOption = document.createElement("option");
                                     newOption.value = "";
                                     newOption.text = "Chọn truyện";
                                     select.add(newOption);
                                 }
-                                mLink.forEach(function (option) {
+                                mOptionLinks.forEach(function (option) {
                                     var newOption = document.createElement("option");
                                     newOption.value = option;
                                     newOption.text = option;
@@ -206,29 +230,43 @@
                     }
                     
                     function insertChosenLinksPriority(){
+                        //console.log("Vao insert");
                         const containerChooseLinks=document.getElementById('container-chose-link');
-                        const newDiv = document.createElement('div');
-                        var contentLinks="";
-                        var contentOptions = "<option value=\"\" selected hidden>Chọn truyện</option>";
-                        for(let i=0;i<mLinksGlobal.length;i++){
-                                 contentOptions+= `<option value="${mLinksGlobal[i]}">${mLinksGlobal[i]}
-                                                   </option>`
-                        }
-                        for(let i=0;i<mLinksGlobal.length;i++){
-                            contentLinks+= `
-                            <div class="row-chose">
-                                    <div>${i+1}</div>
-                                    <select id="select-option-${i+1}" class="choose-link"
-                                        onchange="updateSelectOptions('select-option-${i+1}')">
-                                        ${contentOptions}
-                                    </select>
-                            </div>
-                            `
-                        }
-                        newDiv.innerHTML=contentLinks;
-                        containerChooseLinks.appendChild(newDiv);
+                        if (containerChooseLinks !== null) {
+                            containerChooseLinks.innerHTML="";
+                            const newDiv = document.createElement('div');
+                            var contentLinks="";
+                            var contentOptions = "<option value=\"\" selected hidden>Chọn truyện</option>";
+                            for(let i=0;i<mLinksGlobal.length;i++){
+                                    contentOptions+= `<option value="${mLinksGlobal[i]}">${mLinksGlobal[i]}
+                                                    </option>`
+                            }
+                            for(let i=0;i<mLinksGlobal.length;i++){
+                                contentLinks+= `
+                                <div class="row-chose">
+                                        <div>${i+1}</div>
+                                        <select id="select-option-${i+1}" class="choose-link"
+                                            onchange="updateSelectOptions('select-option-${i+1}')">
+                                            ${contentOptions}
+                                        </select>
+                                </div>
+                                `
+                            }
+                            newDiv.innerHTML=contentLinks;
+                            containerChooseLinks.appendChild(newDiv);
+                    }
                         
                     }
+                   
+                    //hàm này là khi fetch liên tục và cập nhật về thì sẽ làm hàm này.
+                    function doIt(){
+                        console.log("Vao doIt");
+                        mLinksGlobal=["a","b","cde","fgh"];
+                        mOptionLinks=mLinksGlobal;
+                        insertChosenLinksPriority();
+                    }
+
+
                     insertChosenLinksPriority();
                 </script>
 
