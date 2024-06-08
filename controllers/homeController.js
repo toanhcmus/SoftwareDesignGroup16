@@ -36,14 +36,14 @@ const { getModules, countModules, loadModules, printModuleNames, getModuleNames,
 })();
 
 
-const searchBook = async (keyword) => {
+const searchBook = async (keyword, myPriorityList) => {
     const modules = getModules();
     if (keyword == '') {
         return [];
     }
     await reloadModules();
     let novels = []
-    for (const moduleName in modules) {
+    for (const moduleName of myPriorityList) {
         console.log('searchBook in homeController ');
         tempNovels = []
         await reloadModules();
@@ -66,25 +66,31 @@ const searchBook = async (keyword) => {
         novels.push(...tempNovels)
     }
     // console.log(novels[0]);
-    // fs.writeFileSync('truyen_list.json', JSON.stringify(novels, null, 2));
-    // console.log('Data đã được lưu vào truyen_list.json');
+    fs.writeFileSync('truyen_list.json', JSON.stringify(novels, null, 2));
+    console.log('Data đã được lưu vào truyen_list.json');
     return novels;
 };
 class HomeController {
     async renderHome(req, res, next) {
-        if (req.query.mylist !== undefined) {
-            myPriorityList = JSON.parse(req.query.mylist);
-        }
+        console.log("----------------");
         const modules = getModules();
         const moduleNames = await getModuleNames(modules);
+        var myPriorityList = moduleNames;
+        
+        if (req.query.mylist !== undefined) {
+            //cái này nhận list danh sách ưu tiên từ server
+            myPriorityList = JSON.parse(req.query.mylist);
+            console.log(myPriorityList);
+        }
+        console.log("list truyen moi o day",myPriorityList);
         const keywordSearch = req.query.keyword || '';
         let isSearched = true;
-        if (keywordSearch === '') {
+        if (Object.keys(req.query).length === 0) {
             //nếu vào trang chủ lần đầu.
             isSearched = false;
         }
-        const novels = await searchBook(keywordSearch)
-        res.render('home', { novels: novels, srcList: moduleNames, isSearched: isSearched });
+        const novels = await searchBook(keywordSearch, myPriorityList);
+        res.render('home', { novels: novels, srcList: myPriorityList, isSearched: isSearched, myPriorityList: myPriorityList});
     }
 }
 
