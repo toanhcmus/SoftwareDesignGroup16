@@ -38,14 +38,14 @@ const { getModules, countModules, loadModules, printModuleNames, getModuleNames,
 
 const searchBook = async (keyword) => {
     const modules = getModules();
-    if (keyword==''){
+    if (keyword == '') {
         return [];
     }
     await reloadModules();
     let novels = []
     for (const moduleName in modules) {
         console.log('searchBook in homeController ');
-        tempNovels=[]
+        tempNovels = []
         await reloadModules();
 
         // if (moduleName!='truyenfull') {//tạm thời chưa xử lí truyện full crawl có keyword
@@ -72,16 +72,19 @@ const searchBook = async (keyword) => {
 };
 class HomeController {
     async renderHome(req, res, next) {
+        if (req.query.mylist !== undefined) {
+            myPriorityList = JSON.parse(req.query.mylist);
+        }
         const modules = getModules();
         const moduleNames = await getModuleNames(modules);
         const keywordSearch = req.query.keyword || '';
-        let isSearched=true;
-        if(keywordSearch===''){
+        let isSearched = true;
+        if (keywordSearch === '') {
             //nếu vào trang chủ lần đầu.
-            isSearched=false;
+            isSearched = false;
         }
         const novels = await searchBook(keywordSearch)
-        res.render('home', { novels: novels, srcList: moduleNames, isSearched:isSearched });
+        res.render('home', { novels: novels, srcList: moduleNames, isSearched: isSearched });
     }
 }
 

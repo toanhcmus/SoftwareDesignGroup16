@@ -69,9 +69,10 @@
                         playMode="normal" loop  autoplay></dotlottie-player>
                 </div>
                 <div class="col-md-6">
-                    <form method="GET">
+                    <form method="GET" action="/" onsubmit="sendSearchBook(event)">
                         <div class="input-group">
                             <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm...">
+                            <input id="priority-list" type="hidden" name="mylist">
                             <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                         </div>
                     </form>
@@ -263,13 +264,18 @@
                         
                     }
                    
-                    //hàm này là khi fetch liên tục và cập nhật về thì sẽ làm hàm này.
-                    // function doIt(){
-                    //     console.log("Vao doIt");
-                    //     mLinksGlobal=["a","b","cde","fgh"];
-                    //     mOptionLinks=mLinksGlobal;
-                    //     insertChosenLinksPriority();
-                    // }
+                    function sendSearchBook(event) {
+                        console.log("Vao sendSearchBook");
+                        // Ngăn chặn việc gửi form mặc định
+                        event.preventDefault();
+
+                        var myListArray = ["a", "b"];
+                        var myListJSONString = JSON.stringify(myListArray);
+
+                        document.getElementById('priority-list').value = myListJSONString;
+
+                        event.target.submit();
+                    }
 
 
                     insertChosenLinksPriority();
