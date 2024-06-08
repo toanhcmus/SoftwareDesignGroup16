@@ -422,9 +422,9 @@
             })
             menuOptionFiles.innerHTML=containerListExportFiles;
         }
+        downloadFileExport();
     }
     insertOptionExportFiles(<%- JSON.stringify(fileExports) %>)
-    downloadFileExport();
     initializeFontSelector(fonts);
     initializeChapterSelector();
     checkCookie();
@@ -433,7 +433,8 @@
 
 <script>
     let mLinksGlobalCheck = <%- JSON.stringify(srcList) %>;
-
+    let mFileExports = <%- JSON.stringify(fileExports) %>;
+    //setInterVal cho source
     setInterval(async function () {
         try {
             const response = await fetch('/fetchModules', {
@@ -468,6 +469,32 @@
             console.error('Error fetching modules:', error);
         }
     }, 5000);
+
+    //setInterVal cho file Export
+    setInterval(async function () {
+        try {
+            console.log("--------");
+            console.log(mFileExports);
+            const response = await fetch('/fetchFileExports', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mFileExports })
+            });
+
+            const { changeFile, newFileExports } = await response.json();
+
+            if (changeFile) {
+                mFileExports = newFileExports;
+                insertOptionExportFiles(mFileExports);
+            }
+        } catch (error) {
+            console.error('Error fetching modules:', error);
+        }
+    }, 5000);
+    
+
 </script>
 
 </html>

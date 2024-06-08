@@ -128,6 +128,26 @@ class ChapterPageController {
         const module=await getModuleExportByName(dataReceive.typeFile);
         module.exportChapterNovel(res, dataReceive);
     }
+
+    async fetchFileExports(req, res, next) {
+        try {
+            console.log("----------");
+            console.log("Vo fetch o server");
+            console.log(req.body.mFileExports);
+            const nameModuleExports= await getModuleExportsNames();
+            console.log("File name hiện tại");
+            console.log(nameModuleExports);
+            const sortedSrcList = req.body.mFileExports.slice().sort();
+            const sortedModuleExportNames = nameModuleExports.slice().sort();
+    
+            const changeFile = JSON.stringify(sortedSrcList) !== JSON.stringify(sortedModuleExportNames);
+    
+            res.json({ changeFile, newFileExports: changeFile ? nameModuleExports : [] });
+        } catch (error) {
+            console.error('Error fetching modules:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 };
 
 module.exports = new ChapterPageController
