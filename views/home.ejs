@@ -57,7 +57,6 @@
 </head>
 
 <body>
-    <button onclick="doIt()"> TEST CONTINUED FETCH</button>
     <div class="container my-4">
         <h1 class="text-center mb-4">HappyGroup</h1>
 
@@ -242,7 +241,7 @@
                         //console.log("Vao insert");
                         const containerChooseLinks=document.getElementById('container-chose-link');
                         if (containerChooseLinks !== null) {
-                            console.log("Mlink globals nhá",mLinksGlobal);
+                            //console.log("Mlink globals nhá",mLinksGlobal);
                             containerChooseLinks.innerHTML="";
                             const newDiv = document.createElement('div');
                             var contentLinks="";
@@ -267,7 +266,7 @@
 
                         //set giá trị mặc định link có sẵn lại khi search
                         //Nếu search rồi thì
-                        console.log("abc");
+                        //console.log("abc");
                         var isSearchedInHome= <%= JSON.stringify(isSearched) %>;
                         var mPriorityListInHome= <%- JSON.stringify(myPriorityList) %>;
                         if(isSearchedInHome && !isContinuedFetch){
@@ -318,9 +317,8 @@
                         document.getElementById('priority-list').value = myListJSONString;
                         event.target.submit();
                     }
-                    function doIt(){
-                        console.log("Vao doIt");
-                        mLinksGlobal=["thichtruyen","truyenfull"];
+                    function updateAfterChangedFetch(newLinks){
+                        mLinksGlobal=newLinks;
                         mOptionLinks=mLinksGlobal;
                         insertChosenLinksPriority(true);
                     }
@@ -347,6 +345,7 @@
                                 mLinksGlobalCheck = newModules;
                                 
                                 // cập nhật lại option ở đây
+                                updateAfterChangedFetch(mLinksGlobalCheck);
                             }
                         } catch (error) {
                             console.error('Error fetching modules:', error);
