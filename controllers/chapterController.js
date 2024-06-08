@@ -14,18 +14,21 @@ const { countModuleExports, loadModuleExports,getModuleExportsNames,getModuleExp
 
 class ChapterPageController {
     async renderChapterPage(req, res) {
+        const modules = getModules();
         const listFileExports= await getModuleExportsNames();
         const novel = req.params.name;
         console.log(novel);
         const src = req.params.src;
+        const srcList = await getModuleNames(modules);
 
-        let chapter = 0;
+        let chapter = (~~req.params.chap) - 1;
 
-        if (src === "truyenfull") {
-            chapter = (~~req.params.chap);
-        } else {
-            chapter = (~~req.params.chap) - 1;
-        }
+        // if (src === "truyenfull") {
+        //     chapter = (~~req.params.chap);
+        // } else {
+        //     chapter = (~~req.params.chap) - 1;
+        // }
+
 
 
         console.log(req.params.name + " Chapter " + chapter);
@@ -34,19 +37,20 @@ class ChapterPageController {
         res.cookie('src', src)
         console.log(" YESSSSSSSSSSSSSSS", req.cookies.novel);
 
-        let module = tangthuvien;
+        let module = await getModuleByName(modules, src);
+        let moduleName = await module.getName();
 
-        if (src == "tangthuvien") {
-            module = tangthuvien;
-        }
+        // if (src == "tangthuvien") {
+        //     module = tangthuvien;
+        // }
 
-        if (src == "thichtruyen") {
-            module = thichtruyen;
-        }
+        // if (src == "thichtruyen") {
+        //     module = thichtruyen;
+        // }
 
-        if (src == "truyenfull") {
-            module = truyenfull;
-        }
+        // if (src == "truyenfull") {
+        //     module = truyenfull;
+        // }
 
         module.crawlAllNovels(novel).then(
             results => {
@@ -66,57 +70,30 @@ class ChapterPageController {
                     const cover = item.cover;
                     const title = item.title;
                     // console.log(item);    
+                    module.fetchChapterList(item.detailLink).then(
+                        result => {
+                            console.log(result[chapter]);
+                            var chapterNumber = result.length;
+                            var chapterList = "";
 
-                    if (module == thichtruyen || module == tangthuvien) {
-                        module.fetchChapterList(item.detailLink).then(
-                            result => {
-                                console.log(result[chapter]);
-                                var chapterNumber = result.length;
-                                var chapterList = "";
-
-                                for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
-                                    chapterList += "<li> <a href=chapter=" + chaptercount + "> Chương " + chaptercount + "</a> </li>";
-                                }
-
-                                module.crawlChapter(result[chapter]).then(
-                                    chap => {
-                                        res.render('chapterPage', {
-                                            chapterList: chapterList,
-                                            previousPage: `document.location='chapter=${chapter}'`,
-                                            nextPage: `document.location='chapter=${chapter + 2}'`,
-                                            title: title, chapter: chapter + 1, content: chap,
-                                            fileExports: listFileExports
-                                        });
-                                    }
-                                );
+                            for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
+                                chapterList += "<li> <a href=chapter=" + chaptercount + "> Chương " + chaptercount + "</a> </li>";
                             }
-                        );
-                    } else {
-                        module.getChapterDetails(chapter).then(
-                            result => {
-                                console.log(result);
-                                console.log("Số lượng " + item.chapters)
-                                var chapterNumber = item.chapters;
-                                var chapterList = "";
 
-                                for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
-                                    chapterList += "<option> Chương " + chaptercount + "</option>";
+                            module.crawlChapter(result[chapter]).then(
+                                chap => {
+                                    // console.log(chap);
+                                    res.render('chapterPage', {
+                                        chapterList: chapterList,
+                                        previousPage: `document.location='chapter=${chapter}'`,
+                                        nextPage: `document.location='chapter=${chapter + 2}'`,
+                                        title: title, chapter: chapter + 1, content: chap,
+                                        fileExports: listFileExports
+                                    });
                                 }
-
-                                console.log(chapterList);
-
-                                let content = result.content;
-
-                                res.render('chapterPage', {
-                                    chapterList: chapterList,
-                                    previousPage: `document.location='chapter=${result.chapter_prev}'`,
-                                    nextPage: `document.location='chapter=${result.chapter_next}'`,
-                                    title: title, chapter: result.position, content: content,
-                                    fileExports: listFileExports
-                                });
-                            });
-                    }
-
+                            );
+                        }
+                    );
                 }
             });
 
