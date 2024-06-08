@@ -92,6 +92,24 @@ class HomeController {
         const novels = await searchBook(keywordSearch, myPriorityList);
         res.render('home', { novels: novels, srcList: myPriorityList, isSearched: isSearched, myPriorityList: myPriorityList});
     }
+
+    async fetchModules(req, res, next) {
+        try {
+    
+            const modules = getModules();
+            const moduleNames = await getModuleNames(modules);
+    
+            const sortedSrcList = req.body.mLinksGlobalCheck.slice().sort();
+            const sortedModuleNames = moduleNames.slice().sort();
+    
+            const change = JSON.stringify(sortedSrcList) !== JSON.stringify(sortedModuleNames);
+    
+            res.json({ change, newModules: change ? moduleNames : [] });
+        } catch (error) {
+            console.error('Error fetching modules:', error);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
 }
 
 module.exports = new HomeController;

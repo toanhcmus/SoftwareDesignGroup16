@@ -23,15 +23,14 @@
 
                     <label for="select-option-3">Nguồn</label>
 
-                    <!-- <select id="select-option-3" class="choose-link">
-                        <% for (let i = 0; i < srcList.length; i++) { %>
-                            <option value="<%= srcList[i]%>"><%= srcList[i]%></option>
-                        <% } %>
-                    </select> -->
-
                     <select id="select-option-3" class="choose-link">
-                        <% for (let i = 0; i < srcList.length; i++) { %>
-                            <option value="<%= srcList[i]%>" ><%= srcList[i]%></option>
+                        <% for (let i = 0; i < srcList.length; i++) { 
+                            const encodedTitle = encodeURIComponent(title);
+                            const optionValue = srcList[i];
+                            const optionUrl = `http://localhost:3000/name=${encodedTitle}/src=${optionValue}/page=1`;
+                            const isSelected = (optionValue === src) ? 'selected' : '';
+                        %>
+                            <option value="<%= optionUrl %>" <%= isSelected %>><%= optionValue %></option>
                         <% } %>
                     </select>
 
@@ -98,6 +97,53 @@
     </body>
 
     <script>
-        
+        document.getElementById('select-option-3').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const url = selectedOption.value;
+            window.location.href = url;
+        });
+    </script>
+
+    <script>
+        let mLinksGlobalCheck = <%- JSON.stringify(srcList) %>;
+
+        setInterval(async function () {
+            try {
+                const response = await fetch('/fetchModules', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mLinksGlobalCheck })
+                });
+
+                const { change, newModules } = await response.json();
+
+                if (change) {
+                    mLinksGlobalCheck = newModules;
+
+                    const selectElement = document.getElementById('select-option-3');
+                    const selectedOptionValue = selectElement.value;
+                    selectElement.innerHTML = '';
+                    mLinksGlobalCheck.forEach(optionValue => {
+                        const option = document.createElement('option');
+                        option.textContent = optionValue;
+
+                        const titleValue = <%- JSON.stringify(title) %>;
+                        const encodedTitle = encodeURIComponent(titleValue);
+                        const optionUrl = `http://localhost:3000/name=${encodedTitle}/src=${optionValue}/page=1`;
+                        option.value = optionUrl;
+
+                        const selected = (optionValue === <%- JSON.stringify(src) %>);
+                        if (selected) {
+                            option.selected = true;
+                        }
+                        selectElement.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching modules:', error);
+            }
+        }, 5000);
     </script>
 </html>

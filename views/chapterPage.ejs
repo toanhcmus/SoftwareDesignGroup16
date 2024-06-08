@@ -82,6 +82,14 @@
             <select id="font-name" onchange="onFontChanged()">
             </select>
         </div>
+        <select id="select-option-3" class="choose-link">
+            <% for (let i = 0; i < srcList.length; i++) { 
+                const optionValue = srcList[i];
+                const isSelected = (optionValue === src) ? 'selected' : '';
+            %>
+                <option value="<%= optionValue %>" <%= isSelected %>><%= optionValue %></option>
+            <% } %>
+        </select>
         <div class="dropdown">
             <div class="btn-group">
                 <button type="button" class="btn btn-success">Download</button>
@@ -104,6 +112,15 @@
 </body>
 
 <script>
+    document.getElementById('select-option-3').addEventListener('change', function() {
+        const selectedOption = this.value;
+        const name = "<%= title %>";
+        const chapter = "<%= chapter %>";
+
+        const newUrl = `http://localhost:3000/name=${encodeURIComponent(name)}/src=${selectedOption}/chapter=${chapter}`;
+        window.location.href = newUrl;
+    });
+
     var fonts = ["JetBrains Mono", "Montez", "Lobster", "Josefin Sans", "Shadows Into Light", "Pacifico", "Amatic SC", "Orbitron", "Rokkitt", "Righteous", "Dancing Script", "Bangers", "Chewy", "Sigmar One", "Architects Daughter", "Abril Fatface", "Covered By Your Grace", "Kaushan Script", "Gloria Hallelujah", "Satisfy", "Lobster Two", "Comfortaa", "Cinzel", "Courgette"];
     window.onscroll = function () { scrollFunction() };
 
@@ -412,6 +429,45 @@
     initializeChapterSelector();
     checkCookie();
 
+</script>
+
+<script>
+    let mLinksGlobalCheck = <%- JSON.stringify(srcList) %>;
+
+    setInterval(async function () {
+        try {
+            const response = await fetch('/fetchModules', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mLinksGlobalCheck })
+            });
+
+            const { change, newModules } = await response.json();
+
+            if (change) {
+                mLinksGlobalCheck = newModules;
+
+                const selectElement = document.getElementById('select-option-3');
+                const selectedOptionValue = selectElement.value;
+                selectElement.innerHTML = '';
+                mLinksGlobalCheck.forEach(optionValue => {
+                    const option = document.createElement('option');
+                    option.textContent = optionValue;
+                    option.value = optionValue;
+
+                    const selected = (optionValue === <%- JSON.stringify(src) %>);
+                    if (selected) {
+                        option.selected = true;
+                    }
+                    selectElement.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching modules:', error);
+        }
+    }, 5000);
 </script>
 
 </html>

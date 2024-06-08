@@ -8,6 +8,7 @@ const chapterController = require('../controllers/chapterController.js');
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use('/', express.json());
 router.post('/download',chapterController.sendFileExportToClient);
+router.post('/fetchModules', homeController.fetchModules)
 router.get('/',homeController.renderHome)
 
 module.exports = router;

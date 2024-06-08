@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const modulesDir = path.join(__dirname, '..', 'exportModuels');
+const modulesDir = path.join(__dirname, '..', 'exportModules');
 let moduleExports = {};
 
 let debounceTimeout;

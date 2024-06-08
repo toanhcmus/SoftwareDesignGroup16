@@ -329,6 +329,32 @@
                     insertChosenLinksPriority(false);
                 </script>
 
+                <script>
+                    let mLinksGlobalCheck=<%- JSON.stringify(srcList) %>;
+
+                    setInterval(async function () {
+                        try {
+                            const response = await fetch('/fetchModules', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ mLinksGlobalCheck })
+                            });
+
+                            const { change, newModules } = await response.json();
+
+                            if (change) {
+                                mLinksGlobalCheck = newModules;
+                                
+                                // cập nhật lại option ở đây
+                            }
+                        } catch (error) {
+                            console.error('Error fetching modules:', error);
+                        }
+                    }, 5000);
+                </script>
+
 </body>
 
 </html>

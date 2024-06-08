@@ -1,7 +1,5 @@
 const { forever } = require('request-promise');
-const thichtruyen = require('../modules/thichtruyen.js');
-const tangthuvien = require('../modules/tangthuvien.js');
-const truyenfull = require('../modules/truyenfull.js');
+const Fuse = require('fuse.js');
 const stringUtil = require('../utilities/stringUtil.js');
 const { getModules, countModules, loadModules, printModuleNames, getModuleNames, reloadModules, getModuleByName } = require('../utilities/moduleLoader.js');
 const path = require('path');
@@ -11,6 +9,11 @@ const { countModuleExports, loadModuleExports,getModuleExportsNames,getModuleExp
 (async () => {
     await loadModuleExports();
 })();
+
+const fuseOptions = {
+    keys: ['title'],
+    threshold: 2,
+};
 
 class ChapterPageController {
     async renderChapterPage(req, res) {
@@ -56,6 +59,16 @@ class ChapterPageController {
             results => {
                 let item = results.find(item => item.title === novel);
 
+                // kiểm tra có novel nào có tên gần giống không
+                if (item == null) {
+                    const fuse = new Fuse(results, fuseOptions);
+                    const fuzzyResult = fuse.search(novel);
+
+                    if (fuzzyResult.length > 0) {
+                        item = fuzzyResult[0].item;
+                    }
+                }
+
                 // Không tìm thấy truyện ở server muốn chuyển đến
                 if (item == null) {
                     return res.render('notFound');
@@ -65,7 +78,7 @@ class ChapterPageController {
 
                 const itemName = item.title;
 
-                if (novel.localeCompare(itemName) == 0) {
+                // if (novel.localeCompare(itemName) == 0) {
 
                     const cover = item.cover;
                     const title = item.title;
@@ -88,13 +101,15 @@ class ChapterPageController {
                                         previousPage: `document.location='chapter=${chapter}'`,
                                         nextPage: `document.location='chapter=${chapter + 2}'`,
                                         title: title, chapter: chapter + 1, content: chap,
-                                        fileExports: listFileExports
+                                        fileExports: listFileExports,
+                                        src: src,
+                                        srcList: srcList
                                     });
                                 }
                             );
                         }
                     );
-                }
+                // }
             });
 
         console.log('Rendering novel page!');
