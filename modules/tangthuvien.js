@@ -71,9 +71,91 @@ async function crawlAllNovels(keyword) {
             currentPage++;
         }
 
-        return allNovels;
+        const extraNovels = await fetchNovelsByAuthor(keyword);
+        allNovels.push(...extraNovels);
+
+        const resultNovels = allNovels.filter((novel, index, self) => index === self.findIndex((t) => (
+                t.title === novel.title && t.author === novel.author
+            ))
+        );
+
+        return resultNovels;
     } catch (error) {
         console.error('Error:', error);
+        return [];
+    }
+}
+
+async function fetchNovelsByAuthor(keyword) {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    try {
+        const searchUrl = `https://truyen.tangthuvien.vn/`;
+        await page.goto(searchUrl);
+
+        await page.type('#inset-autocomplete-input', keyword);
+
+        await page.waitForSelector('.ui-autocomplete', { visible: true });
+
+        const results = await page.evaluate(() => {
+            const items = [];
+            document.querySelectorAll('.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content.ui-corner-all li.ui-menu-item a').forEach(el => {
+                items.push({
+                    text: el.innerText.trim(),
+                    href: el.href
+                });
+            });
+            return items;
+        });
+
+        const matchingName = results.find(item => item.text.toLowerCase().includes(keyword.toLowerCase()));
+
+        if (matchingName) {
+            const linkUrl = matchingName.href;
+            const extraNovels = [];
+
+            await page.goto(linkUrl);
+
+            let currentPage = 1;
+            let maxPage = 1;
+
+            const hasPagination = await page.evaluate(() => {
+                return document.querySelector('.pagination') !== null;
+            });
+
+            if (hasPagination) {
+                maxPage = await page.evaluate(() => {
+                    let maxPage = 1;
+                    document.querySelectorAll('.pagination a').forEach(el => {
+                        const pageText = el.innerText.trim();
+                        if (!isNaN(pageText)) {
+                            const pageNumber = parseInt(pageText);
+                            if (pageNumber > maxPage) {
+                                maxPage = pageNumber;
+                            }
+                        }
+                    });
+                    return maxPage;
+                });
+            }
+
+            while (currentPage <= maxPage) {
+                const pageUrl = `${linkUrl}?page=${currentPage}`;
+                const pageNovels = await crawlNovelsFromPage(pageUrl);
+                extraNovels.push(...pageNovels);
+                currentPage++;
+            }
+
+            await browser.close();
+            return extraNovels;
+        } else {
+            await browser.close();
+            return [];
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        await browser.close();
         return [];
     }
 }
