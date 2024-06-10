@@ -52,7 +52,7 @@ async function crawlAllNovels(keyword) {
 
         const novelListContainer = $('.book-img-text ul');
         if (novelListContainer.find('li').length === 1 && novelListContainer.find('li p').text().trim() === 'Không tìm thấy truyện nào theo yêu cầu') {
-            return await fetchNovelsByAuthor(keyword);
+            return await crawlNovelsByAuthor(keyword);
         }
 
         $('.pagination a').each((index, element) => {
@@ -71,7 +71,7 @@ async function crawlAllNovels(keyword) {
             currentPage++;
         }
 
-        const extraNovels = await fetchNovelsByAuthor(keyword);
+        const extraNovels = await crawlNovelsByAuthor(keyword);
         allNovels.push(...extraNovels);
 
         const resultNovels = allNovels.filter((novel, index, self) => index === self.findIndex((t) => (
@@ -86,7 +86,7 @@ async function crawlAllNovels(keyword) {
     }
 }
 
-async function fetchNovelsByAuthor(keyword) {
+async function crawlNovelsByAuthor(keyword) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
