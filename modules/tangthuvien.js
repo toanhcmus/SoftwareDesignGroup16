@@ -109,7 +109,13 @@ async function fetchNovelsByAuthor(keyword) {
             return items;
         });
 
-        const matchingName = results.find(item => item.text.toLowerCase().includes(keyword.toLowerCase()));
+        const keywordLowerCase = keyword.toLowerCase();
+
+        let matchingName = results.find(item => item.text.toLowerCase() === keywordLowerCase);
+
+        if (matchingName == null) {
+            matchingName = results.find(item => item.text.toLowerCase().includes(keywordLowerCase));
+        }
 
         if (matchingName) {
             const linkUrl = matchingName.href;
