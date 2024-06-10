@@ -90,7 +90,10 @@ class HomeController {
             isSearched = false;
         }
         const novels = await searchBook(keywordSearch, myPriorityList);
-        res.render('home', { novels: novels, srcList: myPriorityList, isSearched: isSearched, myPriorityList: myPriorityList});
+        const history = req.cookies.history ? JSON.parse(req.cookies.history) : [];
+        
+        console.log('HISTORY',history)
+        res.render('home', { novels: novels, srcList: myPriorityList, isSearched: isSearched, myPriorityList: myPriorityList,his :history});
     }
 
     async fetchModules(req, res, next) {

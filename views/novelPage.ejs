@@ -33,12 +33,12 @@
                             <option value="<%= optionUrl %>" <%= isSelected %>><%= optionValue %></option>
                         <% } %>
                     </select>
-
-                    <Button class="read-novel-btn" id="read-novel-btn" onclick="document.location='chapter=1'">
-                        <span>
-                            Bắt đầu đọc
+                    <a  href="http://localhost:3000/name=<%= novel%>/src=<%= src %>/chapter=1">
+                        <span class="read-novel-btn" id="read-novel-btn">
+                            <span>Bắt đầu đọc</span>
                         </span>
-                    </Button>
+                    </a>
+                    
 
                     <div> 
                         <hr class="hr-two">             
@@ -145,5 +145,6 @@
                 console.error('Error fetching modules:', error);
             }
         }, 5000);
+        
     </script>
 </html>
