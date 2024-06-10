@@ -34,6 +34,10 @@ class NovelPageController {
             results => {
                 let item = results.find(item => item.title === novel);
 
+                if (item == null) {
+                    item = results.find(item => item.title.includes(novel));
+                }
+
                 // kiểm tra có novel nào có tên gần giống không
                 if (item == null) {
                     const fuse = new Fuse(results, fuseOptions);
