@@ -66,8 +66,8 @@ const searchBook = async (keyword, myPriorityList) => {
         novels.push(...tempNovels)
     }
     // console.log(novels[0]);
-    fs.writeFileSync('truyen_list.json', JSON.stringify(novels, null, 2));
-    console.log('Data đã được lưu vào truyen_list.json');
+    // fs.writeFileSync('truyen_list.json', JSON.stringify(novels, null, 2));
+    // console.log('Data đã được lưu vào truyen_list.json');
     return novels;
 };
 class HomeController {
