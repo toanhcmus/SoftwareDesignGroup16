@@ -52,7 +52,7 @@ async function crawlAllNovels(keyword) {
 
         const novelListContainer = $('.book-img-text ul');
         if (novelListContainer.find('li').length === 1 && novelListContainer.find('li p').text().trim() === 'Không tìm thấy truyện nào theo yêu cầu') {
-            return [];
+            return await fetchNovelsByAuthor(keyword);
         }
 
         $('.pagination a').each((index, element) => {
