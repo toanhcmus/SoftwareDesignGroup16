@@ -126,6 +126,11 @@ async function fetchNovelsByAuthor(keyword) {
             let currentPage = 1;
             let maxPage = 1;
 
+            const novelListContainer = $('.book-img-text ul');
+            if (novelListContainer.find('li').length === 1 && novelListContainer.find('li p').text().trim() === 'Không tìm thấy truyện nào theo yêu cầu') {
+                return [];
+            }
+
             const hasPagination = await page.evaluate(() => {
                 return document.querySelector('.pagination') !== null;
             });
