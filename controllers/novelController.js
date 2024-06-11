@@ -21,6 +21,9 @@ class NovelPageController {
         const secondColumnItemSize = 10;
 
         console.log(req.params.name + " book accessed");
+        let novels = req.cookies.history ? JSON.parse(req.cookies.history) : [];
+        const novelExists = novels.some(n => n.novel === novel && n.src === src && n.chapter==0);
+        
         res.cookie('novel',novel);
         res.cookie('page',page);
         res.cookie('src',src)
@@ -101,9 +104,13 @@ class NovelPageController {
                                 chapterList2: chapColList2,
                                 pagination: pagignationSection,
                                 src: src,
-                                srcList: srcList
+                                srcList: srcList,
+                                novel:novel
                             };
-                            res.cookie('renderItems', renderItems);
+                            if (!novelExists) {
+                                novels.push({ novel, page, src, chapter: 0 ,cover});
+                            }
+                            res.cookie('history', JSON.stringify(novels));
                             res.render('novelPage', renderItems);
                         }
                     );

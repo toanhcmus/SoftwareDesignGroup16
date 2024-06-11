@@ -62,13 +62,45 @@
 
         <div class="filter-section">
             <div class="row mb-3">
-                <div class="card  " style="width: 120px;background-color: rgb(49, 222, 124);" onclick="saveStates()">
-                    <div class=" text-center " > Save State  </div>
-                    <dotlottie-player src="https://lottie.host/1fa0fb22-fe2f-4246-8450-23f370b0b13b/J87Mk0t8c6.json"
-                        background="transparent" speed="1" style="width: 100px; height: 100px; " direction="1"
-                        playMode="normal" loop  autoplay></dotlottie-player>
+                
+                <div class="col-5" style="height:350px;overflow: auto; ">
+                    <h2>Lịch sử đọc truyện</h2>
+                    <% if (his.length > 0) { %>
+                        <div  >
+                            <% for(var i=0; i<his.length; i++) { %>
+                                <div class="row">
+                                    <div  class="col-2">
+                                        <img src="<%= his[i].cover %>" style="width: 100%; height: 100%; object-fit: contain;"  alt="Card Image">    
+                                    </div>
+                                    <div class="col-7">             
+                                        <span class="card-text"><%= his[i].novel %></span>
+                                        <br>
+                                        <span class="card-text">
+                                            <% if (his[i].chapter == 0) { %>
+                                                <span class="card-text"> Trang mô tả</span>
+                                                <br>
+                                                <a href="/name=<%= his[i].novel %>/src=<%= his[i].src %>/page=1">
+                                                    Tiếp tục đọc
+                                                </a>
+                                            <% } else { %>
+                                                <span class="card-text"> Chapter <%= his[i].chapter %></span>
+                                                <br>
+                                                <a href="/name=<%= his[i].novel %>/src=<%= his[i].src %>/chapter=<%= his[i].chapter %>">
+                                                    Tiếp tục đọc
+                                                </a>
+                                            <% } %>
+                                            
+                                        </span>
+                                    </div>
+                                
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } else { %>
+                        <p>Không có lịch sử đọc truyện.</p>
+                    <% } %>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <form method="GET" action="/" onsubmit="sendSearchBook(event)">
                         <div class="input-group">
                             <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm...">
@@ -79,7 +111,7 @@
                     
                 </div>
 
-                <div class="col-md-4" >
+                <div class="col-md-2" >
                     <div class="btn-group">
                         <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                           Mức độ ưu tiên
@@ -94,6 +126,12 @@
                         </div>
                       </div>
                     
+                </div>
+                <div class="card  " style="width: 120px;height:140px;background-color: rgb(49, 222, 124);" onclick="saveStates()">
+                    <div class=" text-center " > Book mark </div>
+                    <dotlottie-player src="https://lottie.host/1fa0fb22-fe2f-4246-8450-23f370b0b13b/J87Mk0t8c6.json"
+                        background="transparent" speed="1" style="width: 100px; height: 100px; " direction="1"
+                        playMode="normal" loop  autoplay></dotlottie-player>
                 </div>
             </div>
         </div>

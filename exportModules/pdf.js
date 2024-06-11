@@ -1,5 +1,6 @@
 const PDFDocument = require('pdfkit');
 const path = require('path');
+const cheerio = require('cheerio');
 module.exports = {
   exportChapterNovel: async (res, dataNovel) => {
     const doc = new PDFDocument();
@@ -15,6 +16,11 @@ module.exports = {
 
     // Add cái font vào
     doc.font('DejaVuSans');
+
+    //Loại bỏ các thẻ br
+    const $ = cheerio.load(dataNovel.content);
+    $('br').replaceWith('\n');  
+    dataNovel.content= $.text(); 
 
     // Add nội dung vào
     doc.text(dataNovel.title+ "\n"+ dataNovel.titleChapter + "\n" + dataNovel.content);
