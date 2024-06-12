@@ -99,13 +99,14 @@ class NovelPageController {
                             const renderItems = {
                                 cover: cover,
                                 title: title,
-                                author: item.chapters,
+                                author: item.author,
                                 chapterList1: chapColList1,
                                 chapterList2: chapColList2,
                                 pagination: pagignationSection,
                                 src: src,
                                 srcList: srcList,
-                                novel:novel
+                                novel:novel,
+                                category: item.genres
                             };
                             if (!novelExists) {
                                 novels.push({ novel, page, src, chapter: 0 ,cover});

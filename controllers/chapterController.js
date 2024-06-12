@@ -99,12 +99,14 @@ class ChapterPageController {
                     module.fetchChapterList(item.detailLink).then(
                         result => {
                             console.log(result[chapter]);
-                            var chapterNumber = result.length;
-                            var chapterList = "";
+                            let chapterNumber = result.length;
+                            let chapterList = "";
 
                             for (let chaptercount = 1; chaptercount <= chapterNumber; chaptercount++) {
-                                chapterList += "<li> <a href=chapter=" + chaptercount + "> Chương " + chaptercount + "</a> </li>";
+                                chapterList += "<option> Chương " + chaptercount + "</option>";
                             }
+
+                            console.log(chapterList);
 
                             module.crawlChapter(result[chapter]).then(
                                 chap => {

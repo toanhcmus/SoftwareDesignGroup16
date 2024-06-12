@@ -98,7 +98,6 @@ class HomeController {
 
     async fetchModules(req, res, next) {
         try {
-    
             const modules = getModules();
             const moduleNames = await getModuleNames(modules);
     
