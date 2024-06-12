@@ -32,7 +32,7 @@ class ChapterPageController {
         //     chapter = (~~req.params.chap) - 1;
         // }
 
-        let novels =JSON.parse(req.cookies.history);
+        let novels = JSON.parse(req.cookies.history);
         const novelExists = novels.some(n => n.novel === novel && n.src === src && n.chapter==chapter+1&&n.chapter!=0);
         let cover= novels.find(n => n.novel === novel && n.src === src).cover
         if (!novelExists) {
