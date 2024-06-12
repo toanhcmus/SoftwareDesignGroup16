@@ -12,7 +12,9 @@ fs.watch(modulesDir, (eventType, filename) => {
         console.log(`Detected changes in ${filename}, scheduling reload...`);
         clearTimeout(debounceTimeout);
         debounceTimeout = setTimeout(async () => {
-            await reloadModules();
+            modules = {};
+            await loadModules(modulesDir, modules);
+            await printModuleNames(modules);
         }, DEBOUNCE_DELAY);
     }
 });
