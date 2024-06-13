@@ -32,16 +32,8 @@ class ChapterPageController {
         //     chapter = (~~req.params.chap) - 1;
         // }
 
-        let novels = JSON.parse(req.cookies.history);
-        const novelExists = novels.some(n => n.novel === novel && n.src === src && n.chapter==chapter+1&&n.chapter!=0);
-        let cover= novels.find(n => n.novel === novel && n.src === src).cover
-        if (!novelExists) {
-            chapter++;
-            novels.push({ novel, src, chapter ,cover});
-            chapter--;
-        }
-        res.cookie('history', JSON.stringify(novels));
-        console.log(" NOVELS  ",novels);
+       
+        
 
         console.log(req.params.name + " Chapter " + chapter);
         res.cookie('chapter', chapter)
@@ -71,7 +63,6 @@ class ChapterPageController {
                 if (item == null) {
                     item = results.find(item => item.title.includes(novel));
                 }
-
                 // kiểm tra có novel nào có tên gần giống không
                 if (item == null) {
                     const fuse = new Fuse(results, fuseOptions);
@@ -95,6 +86,17 @@ class ChapterPageController {
 
                     const cover = item.cover;
                     const title = item.title;
+                    let novels = JSON.parse(req.cookies.history);
+                    const novelExists = novels.some(n => n.novel === novel && n.src === src && n.chapter==chapter+1&&n.chapter!=0);
+                    if (novels){
+                        if (!novelExists) {
+                            chapter++;
+                            novels.push({ novel, src, chapter ,cover});
+                            chapter--;
+                        }
+                        res.cookie('history', JSON.stringify(novels));
+                        console.log(" NOVELS  ",novels);
+                    }
                     // console.log(item);    
                     module.fetchChapterList(item.detailLink).then(
                         result => {
