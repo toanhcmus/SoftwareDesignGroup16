@@ -35,10 +35,14 @@ class NovelPageController {
         
         module.crawlAllNovels(novel).then(
             results => {
-                let item = results.find(item => item.title === novel);
+                let item = results.find(item => item.title.toLowerCase() === novel.toLowerCase());
 
                 if (item == null) {
-                    item = results.find(item => item.title.includes(novel));
+                    item = results.find(item => item.title.toLowerCase().includes(novel.toLowerCase()));
+                }
+
+                if (item == null) {
+                    item = results.find(item => novel.toLowerCase().includes(item.title.toLowerCase()));
                 }
 
                 // kiểm tra có novel nào có tên gần giống không

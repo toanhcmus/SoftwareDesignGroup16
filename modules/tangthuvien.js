@@ -194,7 +194,7 @@ async function fetchChapterList(novelUrl) {
         let previousChapterListHTML = '';
 
         while (true) {
-            await delay(20);
+            await delay(50);
             const currentChapterListHTML = await page.evaluate(() => document.querySelector('#max-volume ul.cf').innerHTML);
 
             if (currentChapterListHTML === previousChapterListHTML) {
