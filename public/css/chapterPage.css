@@ -1,6 +1,5 @@
 body {
     background-color: #C8C5BC;
-    align-items: center;
 }
 
 .flex-container-vertical {
@@ -340,4 +339,29 @@ body {
 
 #back-to-top-btn:hover{
     background-color: #505f88;
+}
+
+.dropdown {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.dropdown-menu{
+    min-width: 50px;
+    margin: 0px;
+    padding: 0px;
+}
+.dropdown-menu li{
+    width: 80px;
+    text-align: center;
+    border-radius: 8px;
+    
+}
+.dropdown-item {
+    width: 80px;
+    padding: 4px 8px;
+}
+.dropdown-divider{
+    width: 80px;
+    padding: 0 5px;
+    margin: 0;
 }

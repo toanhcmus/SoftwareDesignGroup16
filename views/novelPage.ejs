@@ -8,7 +8,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
     </head>
-
+    <button id="back-to-home-btn" class="back-to-home-btn" onclick="backToHome()">
+        <span>Home</span>
+    </button>
     <body>
         <div class="flex-container-vertical main-container drop-shadow">
             <div class="flex-container-horizontal top-container">
@@ -24,16 +26,21 @@
                     <label for="select-option-3">Nguồn</label>
 
                     <select id="select-option-3" class="choose-link">
-                        <option value="truyenfull.vn">truyenfull.vn</option>
-                        <option value="tangthuvien.com">tangthuvien.com</option>
-                        <option value="metruyen.vn">metruyen.vn</option>
+                        <% for (let i = 0; i < srcList.length; i++) { 
+                            const encodedTitle = encodeURIComponent(title);
+                            const optionValue = srcList[i];
+                            const optionUrl = `http://localhost:3000/name=${encodedTitle}/src=${optionValue}/page=1`;
+                            const isSelected = (optionValue === src) ? 'selected' : '';
+                        %>
+                            <option value="<%= optionUrl %>" <%= isSelected %>><%= optionValue %></option>
+                        <% } %>
                     </select>
-
-                    <Button class="read-novel-btn" id="read-novel-btn" onclick="document.location='chapter=1'">
-                        <span>
-                            Bắt đầu đọc
+                    <a  href="http://localhost:3000/name=<%= novel%>/src=<%= src %>/chapter=1">
+                        <span class="read-novel-btn" id="read-novel-btn">
+                            <span>Bắt đầu đọc</span>
                         </span>
-                    </Button>
+                    </a>
+                    
 
                     <div> 
                         <hr class="hr-two">             
@@ -41,31 +48,21 @@
                 </div>
             </div>
 
-            <!-- <div class="flex-container-horizontal detail-section">
-                <div class="description-section">
-                    <h3>
-                        Mô tả
-                    </h3>
-
-                    <p>
-                        Do something evil
-                    </p>
-                </div>
-
+            <div class="flex-container-horizontal detail-section">
                 <div class="category-section">
                     <h3>
                         Thể loại
                     </h3>
 
-                    <p>
-                        Do something evil
-                    </p>
-                </div>
-            </div> -->
-<!-- 
+                    <ul>
+                        <%- category%>
+                    </ul>
+                </ul>
+            </div>
+
             <div> 
                 <hr class="hr-one">             
-            </div> -->
+            </div>
 
                 
             <div class="flex-container-vertical chapter-list">
@@ -92,6 +89,58 @@
     </body>
 
     <script>
+        document.getElementById('select-option-3').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const url = selectedOption.value;
+            window.location.href = url;
+        });
+    </script>
+
+    <script>
+        function backToHome() {
+            document.location = "/";
+        }
+
+        let mLinksGlobalCheck = <%- JSON.stringify(srcList) %>;
+
+        setInterval(async function () {
+            try {
+                const response = await fetch('/fetchModules', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mLinksGlobalCheck })
+                });
+
+                const { change, newModules } = await response.json();
+
+                if (change) {
+                    mLinksGlobalCheck = newModules;
+
+                    const selectElement = document.getElementById('select-option-3');
+                    const selectedOptionValue = selectElement.value;
+                    selectElement.innerHTML = '';
+                    mLinksGlobalCheck.forEach(optionValue => {
+                        const option = document.createElement('option');
+                        option.textContent = optionValue;
+
+                        const titleValue = <%- JSON.stringify(title) %>;
+                        const encodedTitle = encodeURIComponent(titleValue);
+                        const optionUrl = `http://localhost:3000/name=${encodedTitle}/src=${optionValue}/page=1`;
+                        option.value = optionUrl;
+
+                        const selected = (optionValue === <%- JSON.stringify(src) %>);
+                        if (selected) {
+                            option.selected = true;
+                        }
+                        selectElement.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching modules:', error);
+            }
+        }, 5000);
         
     </script>
 </html>

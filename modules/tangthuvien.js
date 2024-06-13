@@ -52,7 +52,7 @@ async function crawlAllNovels(keyword) {
 
         const novelListContainer = $('.book-img-text ul');
         if (novelListContainer.find('li').length === 1 && novelListContainer.find('li p').text().trim() === 'Không tìm thấy truyện nào theo yêu cầu') {
-            return [];
+            return await crawlNovelsByAuthor(keyword);
         }
 
         $('.pagination a').each((index, element) => {
@@ -71,9 +71,102 @@ async function crawlAllNovels(keyword) {
             currentPage++;
         }
 
-        return allNovels;
+        const extraNovels = await crawlNovelsByAuthor(keyword);
+        allNovels.push(...extraNovels);
+
+        const resultNovels = allNovels.filter((novel, index, self) => index === self.findIndex((t) => (
+                t.title === novel.title && t.author === novel.author
+            ))
+        );
+
+        return resultNovels;
     } catch (error) {
         console.error('Error:', error);
+        return [];
+    }
+}
+
+async function crawlNovelsByAuthor(keyword) {
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    try {
+        const searchUrl = `https://truyen.tangthuvien.vn/`;
+        await page.goto(searchUrl);
+
+        await page.type('#inset-autocomplete-input', keyword);
+
+        await page.waitForSelector('.ui-autocomplete', { visible: true });
+
+        const results = await page.evaluate(() => {
+            const items = [];
+            document.querySelectorAll('.ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content.ui-corner-all li.ui-menu-item a').forEach(el => {
+                items.push({
+                    text: el.innerText.trim(),
+                    href: el.href
+                });
+            });
+            return items;
+        });
+
+        const keywordLowerCase = keyword.toLowerCase();
+
+        let matchingName = results.find(item => item.text.toLowerCase() === keywordLowerCase);
+
+        if (matchingName == null) {
+            matchingName = results.find(item => item.text.toLowerCase().includes(keywordLowerCase));
+        }
+
+        if (matchingName) {
+            const linkUrl = matchingName.href;
+            const extraNovels = [];
+
+            await page.goto(linkUrl);
+
+            let currentPage = 1;
+            let maxPage = 1;
+
+            const novelListContainer = $('.book-img-text ul');
+            if (novelListContainer.find('li').length === 1 && novelListContainer.find('li p').text().trim() === 'Không tìm thấy truyện nào theo yêu cầu') {
+                return [];
+            }
+
+            const hasPagination = await page.evaluate(() => {
+                return document.querySelector('.pagination') !== null;
+            });
+
+            if (hasPagination) {
+                maxPage = await page.evaluate(() => {
+                    let maxPage = 1;
+                    document.querySelectorAll('.pagination a').forEach(el => {
+                        const pageText = el.innerText.trim();
+                        if (!isNaN(pageText)) {
+                            const pageNumber = parseInt(pageText);
+                            if (pageNumber > maxPage) {
+                                maxPage = pageNumber;
+                            }
+                        }
+                    });
+                    return maxPage;
+                });
+            }
+
+            while (currentPage <= maxPage) {
+                const pageUrl = `${linkUrl}?page=${currentPage}`;
+                const pageNovels = await crawlNovelsFromPage(pageUrl);
+                extraNovels.push(...pageNovels);
+                currentPage++;
+            }
+
+            await browser.close();
+            return extraNovels;
+        } else {
+            await browser.close();
+            return [];
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        await browser.close();
         return [];
     }
 }
@@ -86,6 +179,7 @@ function delay(time) {
 
 async function fetchChapterList(novelUrl) {
     try {
+        // let currentpage = 1;
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
         await page.goto(novelUrl);
@@ -100,11 +194,15 @@ async function fetchChapterList(novelUrl) {
         let previousChapterListHTML = '';
 
         while (true) {
+            await delay(50);
             const currentChapterListHTML = await page.evaluate(() => document.querySelector('#max-volume ul.cf').innerHTML);
 
             if (currentChapterListHTML === previousChapterListHTML) {
-                break;
+                continue;
             }
+
+            // console.log('page = ', currentpage);
+            // currentpage++;
 
             const $ = cheerio.load(currentChapterListHTML);
             const currentChapters = $('li').toArray();
@@ -113,27 +211,27 @@ async function fetchChapterList(novelUrl) {
                 chapters.push(chapterLink);
             });
 
+            console.log(chapters.length);
+
+            previousChapterListHTML = currentChapterListHTML;
+
             try {
-                const nextPageButton = await page.$('.pagination li:last-child a[aria-label="Next"]');
+                const nextPageButton = await page.$('.pagination a[aria-label="Next"], .pagination a[title="Trang sau"]');
                 if (nextPageButton) {
                     await nextPageButton.click();
-                    await delay(1000);
                     await page.waitForSelector('#max-volume ul.cf li');
                 } else {
-                    break;
+                    await browser.close();
+                    chapters.shift();
+                    return chapters;
                 }
             } catch (error) {
                 console.error('Error clicking on next page button:', error);
+                await browser.close();
                 chapters.shift();
                 return chapters;
             }
-
-            previousChapterListHTML = currentChapterListHTML;
         }
-
-        await browser.close();
-        chapters.shift();
-        return chapters;
     } catch (error) {
         console.error('Error fetching chapter list:', error);
         return [];
