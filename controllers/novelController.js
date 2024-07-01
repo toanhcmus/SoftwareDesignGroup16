@@ -133,7 +133,7 @@ class NovelPageController {
             if (req.cookies.chapter==0)
                 res.json({ redirect: `/name=${req.cookies.novel}/src=${req.cookies.src}/page=1` });
             else 
-                res.json({ redirect: `/name=${req.cookies.novel}/src=${req.cookies.src}/chapter=${req.cookies.chapter}` });
+                res.json({ redirect: `/name=${req.cookies.novel}/src=${req.cookies.src}/chapter=${req.cookies.chapter}+1` });
 
         } else {
             res.json({ message: 'renderItems not found in cookies' });
