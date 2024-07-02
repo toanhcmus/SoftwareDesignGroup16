@@ -81,7 +81,7 @@ async function crawlAllNovels(keyword) {
 
         return resultNovels;
     } catch (error) {
-        console.error('Error:', error);
+        // console.error('Error:', error);
         return [];
     }
 }
@@ -165,7 +165,7 @@ async function crawlNovelsByAuthor(keyword) {
             return [];
         }
     } catch (error) {
-        console.error('Error:', error);
+        // console.error('Error:', error);
         await browser.close();
         return [];
     }
