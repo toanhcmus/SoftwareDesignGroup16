@@ -4,11 +4,17 @@
 <head>
     <title>HappyGroup</title>
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link type="text/css" href="/css/home.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
     <style>
         .card {
             margin-bottom: 20px;
+            height: max-content;
         }
 
         .filter-section {
@@ -19,6 +25,37 @@
             height: 200px;
             object-fit: cover;
         }
+        .row-chose{
+            display: flex;
+            margin: 18px;
+        }
+        .dropdown-item{
+            text-align: center;
+        }
+        #reset-chose-link{
+            border-radius: 8px;
+            background-color: rgb(169, 242, 163);
+        }
+        #reset-chose-link:hover{
+            background-color: rgb(30, 243, 76);
+        }
+        .choose-link{
+            margin-left: 10px;
+            width: 110px;
+            height: 25px;
+            border-radius: 8px;
+            background-color: rgb(208, 239, 239);
+        }
+        .choose-link:hover{
+            background-color: rgb(167, 255, 255);
+        }
+        .choose-link[disabled] {
+            background-color: rgb(208, 239, 239);
+        }
+
+        .choose-link[disabled]:hover {
+            background-color: rgb(208, 239, 239);
+        }
     </style>
 </head>
 
@@ -28,76 +65,76 @@
 
         <div class="filter-section">
             <div class="row mb-3">
-                <div class="card  " style="width: 120px;background-color: rgb(49, 222, 124);" onclick="saveStates()">
-                    <div class=" text-center " > Save State  </div>
-                    <dotlottie-player src="https://lottie.host/1fa0fb22-fe2f-4246-8450-23f370b0b13b/J87Mk0t8c6.json"
-                        background="transparent" speed="1" style="width: 100px; height: 100px; " direction="1"
-                        playMode="normal" loop  autoplay></dotlottie-player>
+                
+                <div class="col-5" style="height:350px;overflow: auto; ">
+                    <h2>Lịch sử đọc truyện</h2>
+                    <% if (his.length > 0) { %>
+                        <div class="card">
+                            <% for(var i=0; i<his.length; i++) { %>
+                                <div class="row">
+                                    <div  class="col-2">
+                                        <img src="<%= his[i].cover %>" style="width: 100%; height: 100%; object-fit: contain;"  alt="Card Image">    
+                                    </div>
+                                    <div class="col-7">             
+                                        <span class="card-text"><%= his[i].novel %></span>
+                                        <br>
+                                        <span class="card-text">
+                                            <% if (his[i].chapter == 0) { %>
+                                                <span class="card-text"> Trang mô tả</span>
+                                                <br>
+                                                <a href="/name=<%= his[i].novel %>/src=<%= his[i].src %>/page=1">
+                                                    Tiếp tục đọc
+                                                </a>
+                                            <% } else { %>
+                                                <span class="card-text"> Chapter <%= his[i].chapter %></span>
+                                                <br>
+                                                <a href="/name=<%= his[i].novel %>/src=<%= his[i].src %>/chapter=<%= his[i].chapter %>">
+                                                    Tiếp tục đọc
+                                                </a>
+                                            <% } %>
+                                            
+                                        </span>
+                                    </div>
+                                
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } else { %>
+                        <p>Không có lịch sử đọc truyện.</p>
+                    <% } %>
                 </div>
-                <div class="col-md-6">
-                    <form method="GET">
+                <div class="col-md-3">
+                    <form method="GET" action="/" onsubmit="sendSearchBook(event)">
                         <div class="input-group">
                             <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm...">
+                            <input id="priority-list" type="hidden" name="mylist">
                             <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                         </div>
                     </form>
-                    <button type="button" class="btn btn-success btn-lg" onclick="saveStates()">Nguyễn Song Toàn chạy
-                        DL nhanh lên</button>
+                    
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2" >
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                          Mức độ ưu tiên
+                        </button>
+                        <div class="dropdown-menu">
+                          <div class="dropdown-item" >
+                            <button id="reset-chose-link" onclick="resetLinks()">Thiết lập lại</button>
+                           <div id="container-chose-link">
 
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>Mức độ ưu tiên</td>
-                                <td><button id="reset-chose-link">Thiết lập lại</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <div>
-                                        <select id="select-option-1" class="choose-link"
-                                            onchange="updateSelectOptions('select-option-1')">
-                                            <option value="" selected hidden>Chọn truyện</option>
-                                            <option value="truyenfull.vn">truyenfull.vn</option>
-                                            <option value="tangthuvien.com">tangthuvien.com</option>
-                                            <option value="metruyen.vn">metruyen.vn</option>>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>
-                                    <div>
-                                        <select id="select-option-2" class="choose-link"
-                                            onchange="updateSelectOptions('select-option-2')">
-                                            <option value="" selected hidden>Chọn truyện</option>
-                                            <option value="truyenfull.vn">truyenfull.vn</option>
-                                            <option value="tangthuvien.com">tangthuvien.com</option>
-                                            <option value="metruyen.vn">metruyen.vn</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>
-                                    <div>
-                                        <select id="select-option-3" class="choose-link"
-                                            onchange="updateSelectOptions('select-option-3')">
-                                            <option value="" selected hidden>Chọn truyện</option>
-                                            <option value="truyenfull.vn">truyenfull.vn</option>
-                                            <option value="tangthuvien.com">tangthuvien.com</option>
-                                            <option value="metruyen.vn">metruyen.vn</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                           </div>
+                        </div>
+                        </div>
+                      </div>
+                    
+                </div>
+                <div class="card  " style="width: 120px;height:140px;background-color: rgb(49, 222, 124);" onclick="saveStates()">
+                    <div class=" text-center " > Book mark </div>
+                    <dotlottie-player src="https://lottie.host/1fa0fb22-fe2f-4246-8450-23f370b0b13b/J87Mk0t8c6.json"
+                        background="transparent" speed="1" style="width: 100px; height: 100px; " direction="1"
+                        playMode="normal" loop  autoplay></dotlottie-player>
                 </div>
             </div>
         </div>
@@ -105,12 +142,12 @@
         <%if (isSearched){ %>
 
             <% if (novels.length>0) { %>
-                <div id="container-list-novels">
+                <div id="container-list-novels main-container drop-shadow">
                     <h2 class="text-center mb-4">Danh sách truyện</h2>
                     <div class="row row-cols-1 row-cols-md-4 g-4">
                         <% for(var i=0; i<novels.length; i++) {%>
                             <div class="col">
-                                <div class="card">
+                                <div class="card" style="height: 450px;">
                                     <img src="<%= novels[i].cover || novels[i].image %>" class="card-img-top"
                                         alt="Card Image">
                                     <div class="card-body">
@@ -123,9 +160,9 @@
                                         <p class="card-text">
                                             <%= novels[i].origin %>
                                         </p>
-                                        <p class="card-text"> <a
-                                                href="/novel/name=<%= encodeURIComponent(novels[i].title) %>/src=<%= novels[i].origin %>/page=1">Chi
-                                                tiết</a></p>
+                                        <button type="button" class="btn btn-primary" style="margin-bottom: 10px;"><a style="color: white; text-decoration: none;"
+                                            href="/name=<%= encodeURIComponent(novels[i].title) %>/src=<%= novels[i].origin %>/page=1">Chi
+                                            tiết</a></button>
                                     </div>
                                 </div>
                             </div>
@@ -140,21 +177,24 @@
                             <%} else { %>
                                 <h2>Nhập từ khóa để tìm kiếm</h2>
                                 <% } %>
-
-
-
-
-
                 </div>
 
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
                     integrity="sha384-ENjdO4Dr2bkBIFxQpIdKSsYG1g3PHPWlDxLgmNkwlghG56Yd7whQYGHIgKmZoZnl"
                     crossorigin="anonymous"></script>
+                <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+                    crossorigin="anonymous"></script> -->
                 <script>
-                    var mLink = ["truyenfull.vn", "metruyen.vn", "tangthuvien.com"];
-                    document.querySelector("#reset-chose-link").onclick = function () {
-                        console.log("abc")
-                        mLink = ["truyenfull.vn", "metruyen.vn", "tangthuvien.com"];
+                    var mLinksGlobal=<%- JSON.stringify(srcList) %>;
+                    var mOptionLinks =<%- JSON.stringify(srcList) %>;
+                    
+                    function resetLinks() {
+               
+                        console.log("resetLinks");
+                        mResetLinks =mLinksGlobal;
+                        mOptionLinks=mLinksGlobal;
+                        //console.log(`Bam vao thiet lap ${mResetLinks}`);
                         var selects = document.querySelectorAll(".choose-link");
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
@@ -163,7 +203,7 @@
                             newOption.value = "";
                             newOption.text = "Chọn truyện";
                             select.add(newOption);
-                            mLink.forEach(function (option) {
+                            mResetLinks.forEach(function (option) {
                                 var newOption = document.createElement("option");
                                 newOption.value = option;
                                 newOption.text = option;
@@ -182,28 +222,28 @@
                         selectedOptionElement.disabled = true
 
                         // Loại bỏ truyện đã chọn khỏi mảng truyen
-                        mLink = mLink.filter(function (option) {
+                        mOptionLinks = mOptionLinks.filter(function (option) {
                             return option !== selectedOptionElement.value;
                         });
-
+                        //console.log(`Vao option: ${mOptionLinks}`);
                         // Cập nhật lại danh sách tùy chọn cho các ô chọn khác
                         var selects = document.querySelectorAll(".choose-link");
 
                         for (var i = 0; i < selects.length; i++) {
                             var select = selects[i];
                             if (select.id != selectedOptionId && select.value === "") {
-                                console.log("a " + select.id)
+                                //console.log("a " + select.value)
                                 select.innerHTML = ''
-                                if (mLink.length == 1) {
+                                if (mOptionLinks.length == 1) {
                                     select.disabled = true
                                 }
-                                if (mLink.length > 1) {
+                                if (mOptionLinks.length > 1) {
                                     var newOption = document.createElement("option");
                                     newOption.value = "";
                                     newOption.text = "Chọn truyện";
                                     select.add(newOption);
                                 }
-                                mLink.forEach(function (option) {
+                                mOptionLinks.forEach(function (option) {
                                     var newOption = document.createElement("option");
                                     newOption.value = option;
                                     newOption.text = option;
@@ -213,10 +253,11 @@
 
                         }
                     }
+                    
                     async function saveStates() {
                         console.log('aaaaaaaaaa')
                         try {
-                            const response = await fetch('/novel/saveStates', {
+                            const response = await fetch('/saveStates', {
                                 method: 'GET'
                             });
                             if (!response.ok) {
@@ -231,6 +272,121 @@
                             console.error('Error:', error);
                         }
                     }
+                    
+                    function insertChosenLinksPriority(isContinuedFetch){
+                        //console.log("Vao insert");
+                        const containerChooseLinks=document.getElementById('container-chose-link');
+                        if (containerChooseLinks !== null) {
+                            //console.log("Mlink globals nhá",mLinksGlobal);
+                            containerChooseLinks.innerHTML="";
+                            const newDiv = document.createElement('div');
+                            var contentLinks="";
+                            var contentOptions = "<option value=\"\" selected hidden>Chọn truyện</option>";
+                            for(let i=0;i<mLinksGlobal.length;i++){
+                                    contentOptions+= `<option value="${mLinksGlobal[i]}">${mLinksGlobal[i]}
+                                                    </option>`
+                            }
+                            for(let i=0;i<mLinksGlobal.length;i++){
+                                contentLinks+= `
+                                <div class="row-chose">
+                                        <div>${i+1}</div>
+                                        <select id="select-option-${i+1}" class="choose-link"
+                                            onchange="updateSelectOptions('select-option-${i+1}')">
+                                            ${contentOptions}
+                                        </select>
+                                </div>
+                                `
+                            }
+                            newDiv.innerHTML=contentLinks;
+                            containerChooseLinks.appendChild(newDiv);
+
+                        //set giá trị mặc định link có sẵn lại khi search
+                        //Nếu search rồi thì
+                        //console.log("abc");
+                        var isSearchedInHome= <%= JSON.stringify(isSearched) %>;
+                        var mPriorityListInHome= <%- JSON.stringify(myPriorityList) %>;
+                        if(isSearchedInHome && !isContinuedFetch){
+                            var selects = document.querySelectorAll(".choose-link");
+                            for (var i = 0; i < selects.length; i++) {
+                                var select = selects[i];
+                                select.value = mPriorityListInHome[i];
+                                select.disabled =true;
+                            }
+                        }
+                        else{
+                            console.log("Ban chua search");
+                        }
+
+                    }
+                        
+                    }
+                   
+                    function sendSearchBook(event) {
+                        //truyền tham số keyword và danh sách ưu tiên tới server
+                        //để lấy về danh sách truyện tương ứng
+                        // Ngăn chặn việc gửi form mặc định
+                        console.log("Vao sendSearchBook");
+                        event.preventDefault();
+
+                        var myPriorityList = [];
+
+                        var selects = document.querySelectorAll(".choose-link");
+
+                        for (var i = 0; i < selects.length; i++) {
+                            var select = selects[i];
+                            if (select.value !== "") {
+                                myPriorityList.push(select.value);
+                            }
+                        }
+
+                        if(myPriorityList.length!==mLinksGlobal.length){
+                            mLinksGlobal.forEach((link)=>{
+                                if(!myPriorityList.includes(link)){
+                                    myPriorityList.push(link);
+                                }
+                            })
+                        }
+                        console.log("Danh sách ưu tiên là",myPriorityList);
+
+                        var myListJSONString = JSON.stringify(myPriorityList);
+
+                        document.getElementById('priority-list').value = myListJSONString;
+                        event.target.submit();
+                    }
+                    function updateAfterChangedFetch(newLinks){
+                        mLinksGlobal=newLinks;
+                        mOptionLinks=mLinksGlobal;
+                        insertChosenLinksPriority(true);
+                    }
+                    
+                    insertChosenLinksPriority(false);
+                </script>
+
+                <script>
+                    let mLinksGlobalCheck=<%- JSON.stringify(srcList) %>;
+
+                    setInterval(async function () {
+                        try {
+                            const response = await fetch('/fetchModules', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ mLinksGlobalCheck })
+                            });
+
+                            const { change, newModules } = await response.json();
+
+                            if (change) {
+                                mLinksGlobalCheck = newModules;
+                                
+                                // cập nhật lại option ở đây
+                                updateAfterChangedFetch(mLinksGlobalCheck);
+                            }
+                        } catch (error) {
+                            console.error('Error fetching modules:', error);
+                        }
+                    }, 5000);
                 </script>
 
 </body>
